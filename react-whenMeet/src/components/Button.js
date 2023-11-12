@@ -1,7 +1,9 @@
-function Button({text}){
+function Button({type,text}){
     return(
         <button
-        >{text}
+        type = {type}
+        >
+            {text}
         </button>
     );
 }
