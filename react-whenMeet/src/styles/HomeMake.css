@@ -51,6 +51,19 @@ button:hover {
     background-color: #2980b9;
 }
 
+.calendarTable {
+    margin: 0 auto; /* 가운데 정렬을 위해 margin을 auto로 설정합니다. */
+}
+
+.calendarTable .cellb {
+    color: gray; /* 회색으로 글자색 지정 */
+}
+
+/* cella 클래스에 대한 스타일 */
+.calendarTable .cella {
+    color: black; /* 검정색으로 글자색 지정 */
+}
+
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
     form {
