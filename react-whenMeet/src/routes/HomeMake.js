@@ -40,7 +40,7 @@ function HomeMake() {
                 />
                 <br />
                 <Input
-                    type="text"
+                    type="password"
                     value={password}
                     onChange={onPasswordChange}
                     placeholder="관리용 Password"

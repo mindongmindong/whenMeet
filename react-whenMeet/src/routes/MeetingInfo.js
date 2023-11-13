@@ -11,7 +11,7 @@ function MeetingInfo() {
     const [endTime, setEndTime] = useState("");
     const navigate = useNavigate();
 
-    const handleOnClick = (event) => {
+    const handleOnChange = (event) => {
         setMeetingPurpose(event.target.value);
     }
     const handleCalendar = (value) => {
@@ -25,7 +25,7 @@ function MeetingInfo() {
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (meetingPurpose === "") {
+        if (meetingPurpose === "" || meetingPurpose === "선택") {
             return alert("목적을 선택하세요");;
         }
         else {
@@ -38,7 +38,8 @@ function MeetingInfo() {
                 <h1>약속 일정 만들기</h1>
                 <label>
                     목적: 
-                    <select value={meetingPurpose} onClick={handleOnClick}>
+                    <select value={meetingPurpose} onChange={handleOnChange}>
+                        <option>선택</option>
                         <option>식사</option>
                         <option>공부</option>
                         <option>놀기</option>
