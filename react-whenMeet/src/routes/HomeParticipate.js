@@ -1,6 +1,12 @@
+import HomeParticipateForm from "../components/HomeParticipateForm";
+import "../styles/HomeMake.css";
+
 function HomeParticipate(){
+
     return(
-        <h1>HomeParticipate</h1>
+        <div className="center-container">
+            <HomeParticipateForm />
+        </div>
     );
 }
 

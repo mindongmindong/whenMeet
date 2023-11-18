@@ -7,7 +7,9 @@ import { useNavigate } from "react-router-dom";
 function MeetingInfoForm() {
     const [meetingPurpose, setMeetingPurpose] = useState("");
     const [number, setNumber] = useState();
-    const [endTime, setEndTime] = useState("");
+    const [endVote, setEndVote] = useState("");
+    const [start, setStart] = useState();
+    const [end, setEnd] = useState();
     const toDo = [
         '선택',
         '식사',
@@ -29,8 +31,16 @@ function MeetingInfoForm() {
         setNumber(event.target.value);
     }
 
+    const handleVoteEnd = (event) => {
+        setEndVote(event.target.value);
+    }
+
+    const handleStart = (event) => {
+        setStart(event.target.value);
+    }
+
     const handleEnd = (event) => {
-        setEndTime(event.target.value);
+        setEnd(event.target.value);
     }
 
     const handleSubmit = (event) => {
@@ -41,16 +51,36 @@ function MeetingInfoForm() {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <h1>약속 일정 만들기</h1>
-                <label>
-                    목적:
-                    <select value={meetingPurpose} onChange={handleOnChange}>
-                        {toDo.map((todo, index) => (
-                            <option key={index}>{todo}</option>
-                        ))}
-                    </select>
-                </label>
+                <div className="purpose-selector">
+                    <h1>약속 일정 만들기</h1>
+                    <label>
+                        목적:
+                        <select value={meetingPurpose} onChange={handleOnChange}>
+                            {toDo.map((todo, index) => (
+                                <option key={index}>{todo}</option>
+                            ))}
+                        </select>
+                    </label>
+                </div>
+
                 <Calendar onChange={handleCalendar} />
+                <div className="timeStartEnd">
+                    시작:
+                    <Input
+                        type="time"
+                        value={start}
+                        onChange={handleStart}
+                        placeholder="시작"
+                    />
+                    종료:
+                    <Input
+                        type="time"
+                        value={end}
+                        onChange={handleEnd}
+                        placeholder="종료"
+                    />
+
+                </div>
                 <Input
                     type="number"
                     value={number}
@@ -59,8 +89,8 @@ function MeetingInfoForm() {
                 />
                 <Input
                     type="datetime-local"
-                    value={endTime}
-                    onChange={handleEnd}
+                    value={endVote}
+                    onChange={handleVoteEnd}
                 />
                 <Button
                     type="submit"

@@ -6,7 +6,7 @@ body {
 
 .center-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* 세로 방향으로 정렬 */
   align-items: center;
   height: 100vh;
 }
@@ -25,6 +25,22 @@ h1 {
   color: #333333;
   font-size: 24px;
   font-family: "Lato";
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.timeStartEnd{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  margin: 0;
 }
 
 input {
@@ -51,6 +67,14 @@ button:hover {
   background-color: #2980b9;
 }
 
+.header{
+  display: flex;
+  gap: 100px;
+}
+
+.purpose-selector{
+  margin : 20px;
+}
 .calendarTable {
   margin: 0 auto; /* 가운데 정렬을 위해 margin을 auto로 설정합니다. */
 }

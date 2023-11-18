@@ -87,6 +87,7 @@ function CalendarMonth(){
 
     return(
         <div className="calendar">
+            <h1>달력</h1>
             <MakeHeader nowMonth={nowMonth} prevMonth={prevMonth} nextMonth={nextMonth}></MakeHeader>
             <h1>{nowYear}</h1>
             <table className="calendarTable">

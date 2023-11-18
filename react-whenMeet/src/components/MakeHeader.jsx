@@ -1,9 +1,23 @@
-export default function MakeHeader(props){
-    return(
-        <div className="header">
-            <h1>{props.nowMonth}월</h1>
-            <button onClick={props.prevMonth}>prev</button>
-            <button onClick={props.nextMonth}>next</button>
+import Button from "./Button";
+
+export default function MakeHeader({ prevMonth, nextMonth, nowMonth }) {
+    return (
+        <div>
+            <h2>
+                <span className="header">
+                    <Button
+                        type="button"
+                        text="prev"
+                        onClick={prevMonth}
+                    />
+                    {nowMonth}월
+                    <Button
+                        type="button"
+                        text="next"
+                        onClick={nextMonth}
+                    />
+                </span>
+            </h2>
         </div>
     );
 }

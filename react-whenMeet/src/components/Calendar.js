@@ -7,7 +7,6 @@ import CalendarMonth from "./CalendarMonth";
 function Calendar({ onChange }) {
   return (
     <div>
-      <h2>달력</h2>
       <CalendarMonth />
     </div>
   );
