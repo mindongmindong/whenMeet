@@ -35,7 +35,7 @@ h2 {
   margin: 0;
 }
 
-.timeStartEnd{
+.timeStartEnd {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -67,13 +67,13 @@ button:hover {
   background-color: #2980b9;
 }
 
-.header{
+.header {
   display: flex;
   gap: 100px;
 }
 
-.purpose-selector{
-  margin : 20px;
+.purpose-selector {
+  margin: 20px;
 }
 .calendarTable {
   margin: 0 auto; /* 가운데 정렬을 위해 margin을 auto로 설정합니다. */
@@ -86,27 +86,6 @@ button:hover {
 /* cella 클래스에 대한 스타일 */
 .calendarTable .cella {
   color: black; /* 검정색으로 글자색 지정 */
-}
-
-.mostTime {
-  position: absolute;
-  margin-top: 200px;
-  margin-left: 20px;
-  width: 20em;
-  border-width: 1px;
-  border-color: black;
-  border-style: solid;
-  padding: 20px;
-}
-.possibleMan {
-  position: absolute;
-  margin-left: 20px;
-  margin-top: 800px;
-  width: 20em;
-  border-width: 1px;
-  border-color: black;
-  border-style: solid;
-  padding: 20px;
 }
 
 .title-box {

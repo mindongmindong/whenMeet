@@ -1,9 +1,10 @@
 import ResultMakeForm from "../components/ResultMakeForm";
-import "../styles/HomeMake.css";
 
 function ResultMake() {
   return (
-    <div className="center-container">
+    <div
+      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+    >
       <ResultMakeForm />
     </div>
   );

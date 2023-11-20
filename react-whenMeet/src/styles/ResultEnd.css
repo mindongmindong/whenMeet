@@ -6,5 +6,18 @@
 
 .calendar {
   border: 1px solid;
-  padding : 10px;
+  padding: 10px;
+}
+.possible {
+  margin-left: 0px;
+  position: fixed;
+  width: 20em;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  padding: 20px;
+}
+.row {
+  display: flex;
+  justify-content: center;
 }
