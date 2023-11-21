@@ -88,6 +88,9 @@ button:hover {
   color: black; /* 검정색으로 글자색 지정 */
 }
 
+.calendarTable .dragging{
+  background-color: red;
+}
 .mostTime {
   position: absolute;
   margin-top: 200px;
