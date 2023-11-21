@@ -1,0 +1,39 @@
+.column-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-container {
+  display: flex;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.calendar-container {
+  margin-right: 30px;
+}
+
+.mostTime {
+  background-color: white;
+  position: fixed;
+  margin-left: 20px;
+  width: 20em;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  padding: 20px;
+}
+.possibleMan {
+  background-color: white;
+  position: fixed;
+  margin-left: 20px;
+  margin-top: 200px;
+  width: 20em;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  padding: 20px;
+}
