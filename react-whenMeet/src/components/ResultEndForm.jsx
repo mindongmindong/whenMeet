@@ -143,6 +143,12 @@ export default function ResultEndForm() {
         </span>
 
         <span className="possible">
+          {!hoveredInfo && (
+            <div>
+              <strong>가능한 사람들이 표시됩니다.</strong>
+              <p>마우스를 달력 위에 올려보세요!</p>
+            </div>
+          )}
           {hoveredInfo && (
             <div style={{ textAlign: "center" }}>
               <strong>
