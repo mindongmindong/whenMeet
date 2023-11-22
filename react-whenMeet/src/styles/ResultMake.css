@@ -3,13 +3,10 @@
   margin: 0 auto;
   text-align: center;
 }
+
 .column-container {
   display: flex;
   flex-direction: column;
-}
-
-.row-container {
-  display: flex;
 }
 
 .flex-row {
@@ -18,23 +15,11 @@
 }
 
 .mostTime {
-  background-color: white;
   position: fixed;
-  margin-left: 20px;
-  width: 20em;
-  border-width: 1px;
-  border-color: black;
-  border-style: solid;
-  padding: 20px;
-}
-.possibleMan {
-  background-color: white;
-  position: fixed;
-  margin-left: 20px;
-  margin-top: 200px;
-  width: 20em;
-  border-width: 1px;
-  border-color: black;
-  border-style: solid;
+  right: 0;
+  top: 30%;
+  transform: translateY(-50%);
+  width: 20%;
+  border: 1px solid black;
   padding: 20px;
 }

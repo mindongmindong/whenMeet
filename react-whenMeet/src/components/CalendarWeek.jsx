@@ -161,16 +161,6 @@ const CalendarWeek = ({
           })}
         </tbody>
       </table>
-      {hoveredInfo && (
-        <div className="possibleMan" style={{ textAlign: "center" }}>
-          <strong>가능한 사람:</strong>
-          <ul>
-            {hoveredInfo.participants.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 };

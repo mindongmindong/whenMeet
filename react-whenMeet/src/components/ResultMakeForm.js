@@ -115,7 +115,7 @@ function ResultMakeForm() {
     updateTimer();
     const timerId = setInterval(updateTimer, 1000);
 
-    return () => clearInterval(timerId); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
+    return () => clearInterval(timerId);
   }, [meetingData.voteExpiresAt]);
 
   const handleEdit = () => {
@@ -151,28 +151,33 @@ function ResultMakeForm() {
           />
         </div>
 
-        <div className="row-container">
-          <span className="mostTime">
-            <div style={{ textAlign: "center" }}>
-              가장 많은 사람들이 가능한 일정
+        <span className="mostTime">
+          <div style={{ textAlign: "center" }}>
+            가장 많은 사람들이 가능한 일정
+          </div>
+          <ol>//일정 5개 나열</ol>
+        </span>
+        <span className="possible">
+          {!hoveredInfo && (
+            <div>
+              <strong>가능한 사람들이 표시됩니다.</strong>
+              <p>마우스를 달력 위에 올려보세요!</p>
             </div>
-            <ol>//일정 5개 나열</ol>
-          </span>
-          <span className="possibleMan">
-            {hoveredInfo && (
-              <div style={{ textAlign: "center" }}>
-                <strong>
-                  {hoveredInfo.date} {hoveredInfo.time}에 가능한 사람:
-                </strong>
-                <ul>
-                  {hoveredInfo.participants.map((name) => (
-                    <li key={name}>{name}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </span>
-        </div>
+          )}
+
+          {hoveredInfo && (
+            <div style={{ textAlign: "center" }}>
+              <strong>
+                {hoveredInfo.date} {hoveredInfo.time}에 가능한 사람:
+              </strong>
+              <ul>
+                {hoveredInfo.participants.map((name) => (
+                  <li key={name}>{name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </span>
       </span>
     </>
   );

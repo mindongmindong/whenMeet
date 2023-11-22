@@ -5,11 +5,15 @@
 .button-container {
   display: flex;
   justify-content: space-between;
-  width: 65%;
 }
-
+.button-container button:first-child {
+  margin-right: 20px;
+}
+.button-container button:last-child {
+  margin-left: 20px;
+}
 .wrap {
-  width: 70%;
+  width: 600px;
 }
 table {
   width: 100%;

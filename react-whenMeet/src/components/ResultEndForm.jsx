@@ -106,7 +106,7 @@ export default function ResultEndForm() {
         <p style={{ color: "blue" }}>약속 시간은 {resultTime}입니다.</p>
         <div>
           <h2 style={{ flex: "none" }}>총 참여한 인원수</h2>
-          <p>{completedPeopleNum}</p>
+          <h3>{completedPeopleNum}</h3>
           <form className="form-container">
             {possibleDates.map((date, index) => (
               <label key={index}>
@@ -131,7 +131,7 @@ export default function ResultEndForm() {
             랜덤으로 약속 시간 확정하기
           </button>
         </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
+        <span className="flex-row" style={{ width: "100%" }}>
           <CalendarWeek
             participants={meetingData.participants}
             startDate={meetingData.startDate}
@@ -140,24 +140,22 @@ export default function ResultEndForm() {
             hoveredInfo={hoveredInfo}
             setHoveredInfo={setHoveredInfo}
           />
+        </span>
 
-          <div className="row2">
-            <span className="possible">
-              {hoveredInfo && (
-                <div style={{ textAlign: "center" }}>
-                  <strong>
-                    {hoveredInfo.date} {hoveredInfo.time}에 가능한 사람:
-                  </strong>
-                  <ul>
-                    {hoveredInfo.participants.map((name) => (
-                      <li key={name}>{name}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </span>
-          </div>
-        </div>
+        <span className="possible">
+          {hoveredInfo && (
+            <div style={{ textAlign: "center" }}>
+              <strong>
+                {hoveredInfo.date} {hoveredInfo.time}에 가능한 사람:
+              </strong>
+              <ul>
+                {hoveredInfo.participants.map((name) => (
+                  <li key={name}>{name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </span>
       </span>
     </div>
   );

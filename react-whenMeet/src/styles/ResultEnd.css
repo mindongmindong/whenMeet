@@ -13,19 +13,20 @@
   border: 1px solid;
   padding: 10px;
 }
+
 .possible {
   position: fixed;
+  right: 0; /* 화면의 오른쪽 끝에 고정 */
+  top: 50%; /* 화면의 상단으로부터 50%의 위치에 고정 */
+  transform: translateY(
+    -50%
+  ); /* 상단 50% 위치에서 자기 자신의 높이의 절반을 위로 이동 */
   width: 20%;
-  border-width: 1px;
-  border-color: black;
-  border-style: solid;
+  border: 1px solid black;
   padding: 20px;
 }
+
 .row {
   display: flex;
   justify-content: center;
-}
-
-.calendar-container {
-  width: 65%;
 }
