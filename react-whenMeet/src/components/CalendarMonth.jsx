@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import MakeDay from "./MakeDay";
 import MakeHeader from "./MakeHeader";
+import TableCell from "./TableCell";
 
 function MakeCell(props){//주차 데이터를 담을 공간
     const calendarArr = [];
@@ -12,41 +13,92 @@ function MakeCell(props){//주차 데이터를 담을 공간
     let nowDate = startDay.getDate();
     const lastDate = lastDay.getDate();
 
-    // cellb는 이전 달이나 다음 달이라서 색을 연하게 칠하게 할 거고
-    // cella는 이번 달이라서 진하게 색을 칠할 거임
-    if(startDay.getDay() > 0){
-        const tmpArr = [];
-        for(let i = startDay.getDay(); i > 0; i--)tmpArr.push(
-            <td className="cellb" onClick={()=>{alert("dd");}}>{lastMonthDate - i + 1}</td>
-        );
-        for(let i = startDay.getDay(); i < 7; i++){
-            tmpArr.push(
-                <td className="cella" onClick={()=>{alert("dd");}}>{nowDate}</td>
-            )
-            nowDate+=1;
-        }
-        calendarArr.push(
-            <tr>{tmpArr}</tr>
-        );
-    }
+    const [dragging, setDragging] = useState("nope");
+    const [selectedDays, setSelectedDays] = useState([]); //선택된 날짜
+    const [isDragging, setIsDragging] = useState(false); //드래그 여부
+    const [dragStartDay, setDragStartDay] = useState(null); //드래그 시작 날짜
+    const [dragEndDay, setDragEndDay] = useState();
+    
+    // 여기 달력 날짜 수정해야함
+    const fDay = new Date(props.nowYear, props.nowMonth - 1, 1 - startDay.getDay()) - (0);
+    const eDay = new Date(props.nowYear, props.nowMonth - 1, lastDate + 6 - lastDay.getDay()) - (0);
 
-    while(nowDate <= lastDate){
+    const handleDragStart = (newDate, idx, comp) => {
+        setIsDragging(!isDragging);
+        // console.log(newDate.toDateString(), idx);
+        setDragStartDay(newDate);
+        for(let day = fDay; day <= eDay; day+=(60*60*24*1000)){
+            const elm = document.getElementById(day);
+            elm.classList.remove("dragging")
+        }
+        console.log(comp);
+    };
+    const handleDragWhile = (newDate, idx, comp) => {
+        if(!isDragging)return;
+        // setDragging("dragging");
+        // dragging = "dragging";
+        console.log(newDate.toDateString(), idx, dragging);
+ 
+        setDragEndDay(newDate);
+
+        let sd = dragStartDay - 0;
+        let ed = newDate - 0;
+        if(sd > ed){
+            let tmp = sd;
+            sd = ed;
+            ed = tmp;
+        }
+        for(let day = fDay; day <= eDay; day+=(60*60*24*1000)){
+            const elm = document.getElementById(day);
+            elm.classList.remove("dragging")
+        }
+        const elm2 = document.getElementById(comp);
+        if(elm2.classList.contains("dragging")){
+            for(let day = ed; day >= comp; day -= (60*60*24*1000)){
+                const elm = document.getElementById(day);
+                // if(elm.classList.contains("dragging"))elm.classList.remove("dragging");
+                // else elm.classList.add("dragging")
+                elm.classList.remove("dragging")
+            }
+        }
+        else {
+            for(let day = sd; day <= ed; day += (60*60*24*1000)){
+                const elm = document.getElementById(day);
+                // if(elm.classList.contains("dragging"))elm.classList.remove("dragging");
+                // else elm.classList.add("dragging")
+                elm.classList.add("dragging")
+            }
+        }
+
+    };
+    const handleDragEnd = (newDate, idx) => {
+        setIsDragging(false);
+        setDragging("nope");
+        // dragging ="";
+        // console.log(newDate.toDateString(), idx, dragging);
+
+        console.log(dragStartDay);
+        console.log(dragEndDay);
+        console.log(Math.abs(dragEndDay - dragStartDay)/(60*60*24*1000));
+    };
+
+
+    for(let day = fDay; day <= eDay; day += (60*60*24*1000)){
         const tmpArr = [];
         for(let i = 0; i < 7; i++){
-            let tmp = nowDate;
             let cn = "cella";
-            if(tmp > lastDate){
-                cn = "cellb";
-                tmp-=lastDate;
-            }
+            const newDate = new Date(day);
+            if(newDate.getMonth() + 1 !== props.nowMonth) cn = "cellb";
             tmpArr.push(
-                <td className={cn} onClick={()=>{alert("dd");}}>{tmp}</td>
-            )
-            nowDate+=1;
+                <TableCell k={day} cn={[cn, dragging].join(" ")} newDate={newDate} hds={handleDragStart} hdw={handleDragWhile} hde={handleDragEnd} i={i} value={newDate.getDate()}/>
+            );
+            day+=(60*60*24*1000)
         }
         calendarArr.push(
             <tr>{tmpArr}</tr>
         );
+
+        day-=(60*60*24*1000)
     }
 
     
