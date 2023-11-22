@@ -1,7 +1,16 @@
 .calendar-container {
-  margin-top: 20px;;
+  margin-top: 20px;
+  width: 100%;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 65%;
 }
 
+.wrap {
+  width: 70%;
+}
 table {
   width: 100%;
   border-collapse: collapse;

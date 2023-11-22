@@ -3,11 +3,9 @@ import "../styles/HomeMake.css";
 
 function ResultEnd() {
   return (
-    <div
-      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
-    >
+    <>
       <ResultEndForm />
-    </div>
+    </>
   );
 }
 

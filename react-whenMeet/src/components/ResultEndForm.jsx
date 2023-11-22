@@ -67,6 +67,15 @@ export default function ResultEndForm() {
           },
         ],
       },
+      {
+        name: "test6",
+        availableSchedules: [
+          {
+            availableDate: "2023-12-22",
+            availableTimes: [38],
+          },
+        ],
+      },
     ],
   };
   const [title, setTitle] = useState(meetingData.title);
@@ -84,14 +93,19 @@ export default function ResultEndForm() {
 
   return (
     <div
-      style={{ textAlign: "center", display: "flex", flexDirection: "column" }}
+      style={{
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
       <span className="row1">
         <h1 className="title-box">{title}</h1>
         <p>투표가 종료되었습니다.</p>
         <p style={{ color: "blue" }}>약속 시간은 {resultTime}입니다.</p>
         <div>
-          <h2>총 참여한 인원수</h2>
+          <h2 style={{ flex: "none" }}>총 참여한 인원수</h2>
           <p>{completedPeopleNum}</p>
           <form className="form-container">
             {possibleDates.map((date, index) => (
@@ -117,17 +131,16 @@ export default function ResultEndForm() {
             랜덤으로 약속 시간 확정하기
           </button>
         </div>
-        <span style={{ display: "flex", flexDirection: "row" }}>
-          <div className="calander-container">
-            <CalendarWeek
-              participants={meetingData.participants}
-              startDate={meetingData.startDate}
-              endDate={meetingData.endDate}
-              maxParticipants={meetingData.maxParticipants}
-              hoveredInfo={hoveredInfo}
-              setHoveredInfo={setHoveredInfo}
-            />
-          </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <CalendarWeek
+            participants={meetingData.participants}
+            startDate={meetingData.startDate}
+            endDate={meetingData.endDate}
+            maxParticipants={meetingData.maxParticipants}
+            hoveredInfo={hoveredInfo}
+            setHoveredInfo={setHoveredInfo}
+          />
+
           <div className="row2">
             <span className="possible">
               {hoveredInfo && (
@@ -144,7 +157,7 @@ export default function ResultEndForm() {
               )}
             </span>
           </div>
-        </span>
+        </div>
       </span>
     </div>
   );

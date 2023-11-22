@@ -1,3 +1,8 @@
+.title-box {
+  width: 30%;
+  margin: 0 auto;
+  text-align: center;
+}
 .form-container {
   width: 100%;
   margin-bottom: 20px;
@@ -9,9 +14,8 @@
   padding: 10px;
 }
 .possible {
-  margin-left: 0px;
   position: fixed;
-  width: 20em;
+  width: 20%;
   border-width: 1px;
   border-color: black;
   border-style: solid;
@@ -20,4 +24,8 @@
 .row {
   display: flex;
   justify-content: center;
+}
+
+.calendar-container {
+  width: 65%;
 }

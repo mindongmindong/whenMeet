@@ -1,3 +1,8 @@
+.title-box {
+  width: 30%;
+  margin: 0 auto;
+  text-align: center;
+}
 .column-container {
   display: flex;
   flex-direction: column;
@@ -10,10 +15,6 @@
 .flex-row {
   display: flex;
   flex-direction: row;
-}
-
-.calendar-container {
-  margin-right: 30px;
 }
 
 .mostTime {

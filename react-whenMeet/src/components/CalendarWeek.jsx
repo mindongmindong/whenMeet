@@ -97,16 +97,18 @@ const CalendarWeek = ({
   const weekDates = weeks[currentWeekIndex] || [];
 
   return (
-    <div>
-      <button onClick={handlePrevWeek} disabled={currentWeekIndex === 0}>
-        Prev Week
-      </button>
-      <button
-        onClick={handleNextWeek}
-        disabled={currentWeekIndex === weeks.length - 1}
-      >
-        Next Week
-      </button>
+    <div className="wrap">
+      <div className="button-container">
+        <button onClick={handlePrevWeek} disabled={currentWeekIndex === 0}>
+          Prev Week
+        </button>
+        <button
+          onClick={handleNextWeek}
+          disabled={currentWeekIndex === weeks.length - 1}
+        >
+          Next Week
+        </button>
+      </div>
       <table className="calendar-container">
         <thead>
           <tr>
