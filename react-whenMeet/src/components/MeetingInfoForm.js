@@ -19,6 +19,8 @@ function MeetingInfoForm() {
     ];
     const navigate = useNavigate();
 
+    const [usingDate, setUsingDate] = useState([]);
+
     const handleOnChange = (event) => {
         setMeetingPurpose(event.target.value);
     }
@@ -45,6 +47,7 @@ function MeetingInfoForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(usingDate);
         (meetingPurpose === "" || meetingPurpose === "선택") ? alert("목적을 선택하세요") : navigate("LinkPage");
     }
 
@@ -63,7 +66,7 @@ function MeetingInfoForm() {
                     </label>
                 </div>
 
-                <Calendar onChange={handleCalendar} />
+                <Calendar onChange={handleCalendar} usingDate={usingDate} setUsingDate={setUsingDate}/>
                 <div className="timeStartEnd">
                     시작:
                     <Input

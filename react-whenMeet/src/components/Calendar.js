@@ -4,10 +4,10 @@ import Input from "./Input";
 import CalendarMonth from "./CalendarMonth";
 // import CalendarWeek2 from './CalendarWeek2';
 
-function Calendar({ onChange }) {
+function Calendar({ onChange, usingDate, setUsingDate }) {
   return (
     <div>
-      <CalendarMonth />
+      <CalendarMonth usingDate={usingDate} setUsingDate={setUsingDate} />
     </div>
   );
 }
