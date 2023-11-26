@@ -1,12 +1,55 @@
 import React, { useState } from "react"
 import './Calendar.css'
 import MakeDay2 from "./MakeDay2";
+import TableCell from "./TableCell";
 
-function CaculateWeek(props){
-    const startDay = new Date(props.nowYear, props.nowMonth - 1, 1);
-    const lastDay = new Date(props.nowYear, props.nowMonth, 0);
+function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTimes, isContain }){
+    const startDay = new Date(nowYear, nowMonth - 1, 1);
+    const lastDay = new Date(nowYear, nowMonth, 0);
     const firstDay = startDay.getDay();
     const lastDate = lastDay.getDate();
+
+    const [dragging, setDragging] = useState();
+    const [isDragging, setIsDragging] = useState(false); //드래그 여부
+    
+    // 여기 달력 날짜 수정해야함
+    const fDay = new Date(nowYear, nowMonth - 1, 1 - startDay.getDay()) - (0); 
+    const eDay = fDay + (60*60*24*1000)*6;
+
+    const handleDragStart = () => {
+        setIsDragging(!isDragging);
+    };
+
+    const handleDragWhile = (newDate, idx, comp) => {
+        if(!isDragging)return;
+
+        const elm2 = document.getElementById(comp);
+        if(elm2.classList.contains("dragging")){
+            const elm = document.getElementById(newDate-0+idx);
+            elm.classList.remove("dragging")
+            setAvailableTimes(availableTimes.filter(key=>key!==newDate-0+idx));
+        }
+        else {
+            const elm = document.getElementById(newDate-0+idx);
+            elm.classList.add("dragging")
+            setAvailableTimes([...availableTimes, newDate-0+idx]);
+        }
+    };
+
+    const handleDragEnd = () => {
+        setIsDragging(false);
+        setDragging();
+    };
+
+    const handleClick = () => {
+        for(let day = fDay; day <= eDay; day+=(60*60*24*1000)){
+            for(let indx = 0; indx < 10; indx++){
+                const elm = document.getElementById(day + indx);
+                elm.classList.remove("dragging")
+            }
+        }
+        setAvailableTimes([])
+    }
 
     const weekArr = [];
     const selectArr = [];
@@ -19,8 +62,8 @@ function CaculateWeek(props){
         const time = (String(Math.floor(minute/60)).padStart(2,"0"))+":"+(String(minute%60).padStart(2,"0"));
 
         for(let j = 0; j < 7; j++){
-            const d = (props.week - 1) * 7 + j - firstDay+1;
-            const newDate = new Date(props.nowYear, props.nowMonth-1, d);
+            const d = (week - 1) * 7 + j - firstDay+1;
+            const newDate = new Date(nowYear, nowMonth-1, d);
 
             if(i===0){
                 let cn = "cella";
@@ -29,8 +72,17 @@ function CaculateWeek(props){
                 
                 weekArr.push(<td className={cn}>{newDate.getDate()}</td>);
             }
-
-            forSelect.push(<td className="ttt" onClick={()=>console.log(newDate.toDateString(),i)}></td>);
+            
+            if(isContain(newDate-0+i)){
+                forSelect.push(
+                    <TableCell k={newDate - 0 + i} cn={"dragging"} newDate={newDate} handleClick={handleClick} hds={handleDragStart} hdw={handleDragWhile} hde={handleDragEnd} i={i}/>
+                );
+            }
+            else{
+                forSelect.push(
+                    <TableCell k={newDate - 0 + i} newDate={newDate} handleClick={handleClick} hds={handleDragStart} hdw={handleDragWhile} hde={handleDragEnd} i={i}/>
+                );
+            }
         }
 
         selectArr.push(
@@ -46,7 +98,7 @@ function CaculateWeek(props){
     );
 }
 
-function CalendarWeek2(){
+function CalendarWeek2({ availableTimes, setAvailableTimes, isContain }){
     const [currentDay, setCurrentDay] = useState(new Date());
     
     // 일요일 0 시작
@@ -114,7 +166,7 @@ function CalendarWeek2(){
             <h1>{nowYear}</h1>
             <table className="calendarTable">
                 <MakeDay2/>
-                <CaculateWeek week={nowWeek} currentDay={currentDay} nowYear={nowYear} nowMonth={nowMonth} />
+                <CaculateWeek week={nowWeek} nowYear={nowYear} nowMonth={nowMonth}availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
             </table>
         </div>
     );

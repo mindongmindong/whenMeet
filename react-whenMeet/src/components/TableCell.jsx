@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
-export default function TableCell({k, cn, newDate, hds, hdw, hde, i, value}){
-    // useEffect(() => { console.log(k)}, []);
+export default function TableCell({k, cn, handleClick, newDate, hds, hdw, hde, i, value  }){
     return(
         <td className={cn}
         key={k}
@@ -10,7 +9,7 @@ export default function TableCell({k, cn, newDate, hds, hdw, hde, i, value}){
         onDragStart={()=>hds(newDate, i, k)}
         onDragEnter={()=>hdw(newDate, i, k)}
         onDragEnd={()=>hde(newDate, i)}
-        onClick={()=>console.log(newDate.getMonth() + 1)}>
+        onClick={()=>handleClick(newDate)}>
         {value} </td>
     );
 }
