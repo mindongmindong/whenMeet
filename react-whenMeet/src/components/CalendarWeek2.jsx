@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import './Calendar.css'
+import '../styles/Calendar.css'
 import MakeDay2 from "./MakeDay2";
 import TableCell from "./TableCell";
 
