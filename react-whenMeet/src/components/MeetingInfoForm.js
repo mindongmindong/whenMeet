@@ -2,7 +2,8 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 function MeetingInfoForm() {
     const [meetingPurpose, setMeetingPurpose] = useState("");
@@ -18,6 +19,8 @@ function MeetingInfoForm() {
         '기타'
     ];
     const navigate = useNavigate();
+    const location = useLocation();
+    const { title, password } = location.state;
 
     const [usingDate, setUsingDate] = useState([]);
 
@@ -45,11 +48,29 @@ function MeetingInfoForm() {
         setEnd(event.target.value);
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(usingDate);
-        (meetingPurpose === "" || meetingPurpose === "선택") ? alert("목적을 선택하세요") : navigate("LinkPage");
-    }
+
+        if (meetingPurpose === "" || meetingPurpose === "선택") {
+            alert("목적을 선택하세요");
+        } else {
+            try {
+                const response = await axios.post("http://43.200.79.42:3000/meetings", {
+                    title: title,
+                    adminPassword: password,
+                    purpose: meetingPurpose,
+                    startDate: start,
+                    endDate: end,
+                    maxParticipants: number,
+                    voteExpiresAt: endVote
+                });
+                const id = response.data.id;
+                navigate("LinkPage",{state : {id}});
+            } catch (error) {
+                console.error("Error sending data to the backEnd", error);
+            }
+        }
+    };
 
     return (
         <form onSubmit={handleSubmit}>
@@ -66,18 +87,18 @@ function MeetingInfoForm() {
                     </label>
                 </div>
 
-                <Calendar onChange={handleCalendar} usingDate={usingDate} setUsingDate={setUsingDate}/>
+                <Calendar onChange={handleCalendar} usingDate={usingDate} setUsingDate={setUsingDate} />
                 <div className="timeStartEnd">
                     시작:
                     <Input
-                        type="time"
+                        type="date"
                         value={start}
                         onChange={handleStart}
                         placeholder="시작"
                     />
                     종료:
                     <Input
-                        type="time"
+                        type="date"
                         value={end}
                         onChange={handleEnd}
                         placeholder="종료"
