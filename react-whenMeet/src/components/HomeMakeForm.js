@@ -23,7 +23,7 @@ function HomeMakeForm() {
         } else if (password === "") {
             return alert("Password를 입력하세요");
         } else {
-            navigate("/MeetingInfo");
+            navigate("/MeetingInfo", {state : {title, password}});
         }
     };
 

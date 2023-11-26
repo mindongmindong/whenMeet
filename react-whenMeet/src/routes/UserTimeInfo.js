@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Button from "../components/Button";
 import CalendarWeek2 from "../components/CalendarWeek2"
 import "../styles/HomeMake.css"
+import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function UserTimeInfo() {
     const [state, setState] = useState(true);
     const [availableSchedules, setAvailableSchedules] = useState([]);
     const [availableTimes, setAvailableTimes] = useState([]);
+
+
+    const location = useLocation();
+    const {id} = location.state;
 
     const handleState = () => {
         setState((state) => !state);
@@ -14,6 +20,18 @@ function UserTimeInfo() {
     const handleCalendar = (value) => {
         console.log('Selected Date:', value);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://43.200.79.42:3000/meetings/${id}/`);
+                console.log(response.data.title);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, [id]); 
     const handleAlert = () => {
         let sat = [...availableTimes].sort();
 
@@ -54,8 +72,6 @@ function UserTimeInfo() {
     const isContain = (value) => {
         return availableTimes.includes(value);
     }
-
-
 
     return (
         <div className="center-container">

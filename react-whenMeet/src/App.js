@@ -12,8 +12,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/meetinginfo/linkpage" element={<LinkPage />}></Route>
-        <Route path="/homeparticipate/usertimeinfo" element={<UserTimeInfo />}></Route>
-        <Route path="/homeparticipate" element={<HomeParticipate />}></Route>
+        <Route path="/homeparticipate/:id/usertimeinfo" element={<UserTimeInfo />}></Route>
+        <Route path="/homeparticipate/:id" element={<HomeParticipate />}></Route>
         <Route path="/meetinginfo" element={<MeetingInfo />}></Route>
         <Route path="/result" element={<ResultMake />}></Route>//결과확인페이지
         <Route path="/resultend" element={<ResultEnd />}></Route>// 투표 종료
