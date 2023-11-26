@@ -5,17 +5,15 @@ export default function MakeHeader({ prevMonth, nextMonth, nowMonth }) {
         <div>
             <h2>
                 <span className="header">
-                    <Button
+                    <button
                         type="button"
-                        text="prev"
                         onClick={prevMonth}
-                    />
+                    >prev</button>
                     {nowMonth}월
-                    <Button
+                    <button
                         type="button"
-                        text="next"
                         onClick={nextMonth}
-                    />
+                    >next</button>
                 </span>
             </h2>
         </div>
