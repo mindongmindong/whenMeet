@@ -78,12 +78,8 @@ export default function ResultEndForm() {
       },
     ],
   };
-  const [title, setTitle] = useState(meetingData.title);
-  const [resultTime, setresultTIme] = useState("00:37:30");
-  const [completedPeopleNum, setcompletedPeopleNum] = useState(
-    meetingData.currentParticipants
-  );
-  const [selectedDate, setSelectedDate] = useState("");
+
+  const [selectedDate, setSelectedDate] = useState("2023-12-22"); // 임의의 예시 값
   const possibleDates = ["23.07.01 ~~~", "23.07.02 ~~~", "23.07.03 ~~~"];
   const [hoveredInfo, setHoveredInfo] = useState(null);
 
@@ -100,13 +96,23 @@ export default function ResultEndForm() {
         alignItems: "center",
       }}
     >
-      <span className="row1">
-        <h1 className="title-box">{title}</h1>
-        <p>투표가 종료되었습니다.</p>
-        <p style={{ color: "blue" }}>약속 시간은 {resultTime}입니다.</p>
+      <h1 className="title-box">{meetingData.title}</h1>
+      <p>투표가 종료되었습니다.</p>
+
+      {meetingData.isClosed ? (
         <div>
-          <h2 style={{ flex: "none" }}>총 참여한 인원수</h2>
-          <h3>{completedPeopleNum}</h3>
+          <p style={{ color: "blue" }}>약속 시간은 {selectedDate}입니다.</p>
+          <div>
+            <h2 style={{ justifyContent: "center" }}>총 참여한 인원수</h2>
+            <h3>{meetingData.currentParticipants}</h3>
+          </div>
+        </div>
+      ) : (
+        <span className="closedFalse">
+          <p>
+            {meetingData.purpose}를 하는 다른 사람들은 주로 평일 낮 시간대에
+            많이 만나요
+          </p>
           <form className="form-container">
             {possibleDates.map((date, index) => (
               <label key={index}>
@@ -130,39 +136,39 @@ export default function ResultEndForm() {
           <button style={{ marginTop: "10px", padding: "10px 20px" }}>
             랜덤으로 약속 시간 확정하기
           </button>
-        </div>
-        <span className="flex-row" style={{ width: "100%" }}>
-          <CalendarWeek
-            participants={meetingData.participants}
-            startDate={meetingData.startDate}
-            endDate={meetingData.endDate}
-            maxParticipants={meetingData.maxParticipants}
-            hoveredInfo={hoveredInfo}
-            setHoveredInfo={setHoveredInfo}
-          />
         </span>
+      )}
 
-        <span className="possible">
-          {!hoveredInfo && (
-            <div>
-              <strong>가능한 사람들이 표시됩니다.</strong>
-              <p>마우스를 달력 위에 올려보세요!</p>
-            </div>
-          )}
-          {hoveredInfo && (
-            <div style={{ textAlign: "center" }}>
-              <strong>
-                {hoveredInfo.date} {hoveredInfo.time}에 가능한 사람:
-              </strong>
-              <ul>
-                {hoveredInfo.participants.map((name) => (
-                  <li key={name}>{name}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </span>
-      </span>
+      <div className="flex-row">
+        <CalendarWeek
+          participants={meetingData.participants}
+          startDate={meetingData.startDate}
+          endDate={meetingData.endDate}
+          maxParticipants={meetingData.maxParticipants}
+          hoveredInfo={hoveredInfo}
+          setHoveredInfo={setHoveredInfo}
+        />
+      </div>
+      <div className="possible">
+        {!hoveredInfo && (
+          <div>
+            <strong>가능한 사람들이 표시됩니다.</strong>
+            <p>마우스를 달력 위에 올려보세요!</p>
+          </div>
+        )}
+        {hoveredInfo && (
+          <div style={{ textAlign: "center" }}>
+            <strong>
+              {hoveredInfo.date} {hoveredInfo.time}에 가능한 사람:
+            </strong>
+            <ul>
+              {hoveredInfo.participants.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
