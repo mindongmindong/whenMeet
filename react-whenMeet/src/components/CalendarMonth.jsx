@@ -79,7 +79,7 @@ function MakeCell({ nowYear, nowMonth, usingDate, setUsingDate }){//주차 데�
         }
         // console.log(startDate);
         // console.log(endDate);
-        setUsingDate([{startDate:startDate, endDate:endDate}])
+        setUsingDate({startDate:startDate, endDate:endDate})
     };
 
     const handleClick = (newDate) => {

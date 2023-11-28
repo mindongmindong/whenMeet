@@ -3,16 +3,13 @@ import Button from "../components/Button";
 import CalendarWeek2 from "../components/CalendarWeek2"
 import "../styles/HomeMake.css"
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function UserTimeInfo() {
     const [state, setState] = useState(true);
     const [availableSchedules, setAvailableSchedules] = useState([]);
     const [availableTimes, setAvailableTimes] = useState([]);
-
-
-    const location = useLocation();
-    const {id} = location.state;
+    const {id} = useParams();
 
     const handleState = () => {
         setState((state) => !state);

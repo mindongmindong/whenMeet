@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Input from "./Input";
 import Button from "./Button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function HomeParticipateForm() {
@@ -9,8 +9,7 @@ function HomeParticipateForm() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const navigate = useNavigate();
-    const location = useLocation();
-    const { id } = location.state;
+    const { id } = useParams();
 
     const handleName = (event) => {
         setName(event.target.value);
@@ -22,11 +21,13 @@ function HomeParticipateForm() {
         setEmail(event.target.value);
     }
     const checkParticipantExistence = async()=>{
-        const response = await axios.get(`http://43.200.79.42:3000/meetings/${id}/participants/?name=${name}`);
-        if(response.data){
-            alert('이미 존재하는 이름입니다.')
+        try{
+            const response = await axios.get(`http://43.200.79.42:3000/meetings/${id}/participants/?name=${name}`);
+            return false;
         }
-        return response.data.name;
+        catch(err){
+            return true;
+        }
     }
 
     const newHandleSubmit = async (event) => {
@@ -35,16 +36,22 @@ function HomeParticipateForm() {
             alert('이름을 입력하세요')
         }
         else {
-            try {
-                const response = await axios.post(`http://43.200.79.42:3000/meetings/${id}/participants`, {
-                    name: name,
-                    password: password,
-                    email: email
-                });
-                navigate('UserTimeInfo', { state: { id } });
+            let checkParticipant =  await checkParticipantExistence();
+            if(checkParticipant){
+                try {
+                    const response = await axios.post(`http://43.200.79.42:3000/meetings/${id}/participants`, {
+                        name: name,
+                        password: password,
+                        email: email
+                    });
+                    navigate('UserTimeInfo', { state: { id } });
+                }
+                catch (error) {
+                    console.error(error);
+                }
             }
-            catch (error) {
-                console.error(error);
+            else{
+                alert('이미 존재하는 이름입니다.');
             }
         }
     };
@@ -59,27 +66,22 @@ function HomeParticipateForm() {
                     name : name,
                     password : password
                 });
-                if(response.status === 401 ){
-                    alert('이름 또는 Password를 잘못 입력하였습니다');
-                    return;
-                }
-                else if(response.status === 404){
-                    alert('일치하는 참가자가 존재하지 않습니다');
-                    return;
-                }
-                //navigate('UserTimeInfo', { state: { id } });
+                navigate('UserTimeInfo', { state: { id } });
             }
             catch (error) {
                 if (error.response) {
                     if (error.response.status === 401) {
-                        alert('이름 또는 Password를 잘못 입력하였습니다');
+                        alert('Password를 잘못 입력하였습니다');
                     } else if (error.response.status === 404) {
-                        alert('일치하는 참가자가 존재하지 않습니다');
-                    } else {
+                        alert('해당하는 이름이 존재하지 않습니다');
+                    } 
+                    else if(error.response.status === 400){
+                        alert("비밀번호를 설정하셨습니다. 비밀번호를 입력해주세요")
+                    }
+                    else {
                         alert(`Unexpected status code: ${error.response.status}`);
                     }
                 } else {
-                    // Handle other types of errors
                     console.error(error);
                 }
                 
@@ -102,7 +104,7 @@ function HomeParticipateForm() {
                     type="password"
                     value={password}
                     onChange={handlePassword}
-                    placeholder="Password"
+                    placeholder="Password(선택)"
                 />
                 <Input
                     type="text"

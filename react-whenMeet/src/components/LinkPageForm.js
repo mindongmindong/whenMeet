@@ -24,7 +24,7 @@ function LinkPageForm() {
     const handleSubmit = async(event) => {
         event.preventDefault();
         console.log({id});
-        navigate(`/HomeParticipate/${id}`,{state : {id}});
+        navigate(`/HomeParticipate/${id}`);
     }
 
     return (
