@@ -11,6 +11,13 @@ function UserTimeInfo() {
     const [availableTimes, setAvailableTimes] = useState([]);
     const {id} = useParams();
 
+    const [startTime, setStartTime] = useState(0);
+    const [endTime, setEndTiem] = useState(48);
+    const [today, setToday] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date(2023,10,30));
+    const [endDate, setEndDate] = useState(new Date(2023,11,4));
+    
+    
     const handleState = () => {
         setState((state) => !state);
     }
@@ -28,22 +35,23 @@ function UserTimeInfo() {
             }
         };
         fetchData();
-    }, [id]); 
+    }, [id]);
+
     const handleAlert = () => {
         let sat = [...availableTimes].sort();
+        console.log(availableTimes);
 
         const aa = [];
         let t = [];
         let l = availableTimes[0];
 
         sat.forEach((em) => {
-            if(parseInt(l/10)!==parseInt(em/10)){
+            if(parseInt(l/100)!==parseInt(em/100)){
                 t=[];
             }
-            l = em;
             const newDate = new Date(parseInt(em));
-            const availableDate = newDate.getFullYear() + '-' + newDate.getMonth() + '-' + newDate.getDate();
-            t.push(em%10);
+            const availableDate = newDate.getFullYear() + '-' + (newDate.getMonth()+1) + '-' + newDate.getDate();
+            t.push(em%100);
             aa.push({availableDate: availableDate, availableTimes: t})
         });
 
@@ -82,14 +90,7 @@ function UserTimeInfo() {
                 text="불가능한 시간"
                 onClick={handleState}
             />
-            {/* {state ? <Calendar
-                onChange={handleCalendar}
-            /> :
-                <Calendar
-                    onChange={handleCalendar}
-                />
-            } */}
-            <CalendarWeek2 state={state} availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
+            <CalendarWeek2 state={state} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} today={today} availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
             <Button
                 type="submit"
                 text="시작하기"

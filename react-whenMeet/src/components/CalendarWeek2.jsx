@@ -3,7 +3,7 @@ import '../styles/Calendar.css'
 import MakeDay2 from "./MakeDay2";
 import TableCell from "./TableCell";
 
-function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTimes, isContain }){
+function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTimes, isContain, startDate, endDate, startTime, endTime}){
     const startDay = new Date(nowYear, nowMonth - 1, 1);
     const lastDay = new Date(nowYear, nowMonth, 0);
     const firstDay = startDay.getDay();
@@ -13,31 +13,35 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
     const [isDragging, setIsDragging] = useState(false); //드래그 여부
     
     // 여기 달력 날짜 수정해야함
-    const fDay = new Date(nowYear, nowMonth - 1, 1 - startDay.getDay()) - (0); 
+    const fDay = new Date(nowYear, nowMonth-1, (week-1)*7-firstDay+1) - (0); 
     const eDay = fDay + (60*60*24*1000)*6;
 
     const handleDragStart = () => {
         setIsDragging(!isDragging);
     };
 
+    const doCheck=[...availableTimes];
     const handleDragWhile = (newDate, idx, comp) => {
         if(!isDragging)return;
+
+        console.log(newDate-0+idx);
 
         const elm2 = document.getElementById(comp);
         if(elm2.classList.contains("dragging")){
             const elm = document.getElementById(newDate-0+idx);
             elm.classList.remove("dragging")
-            setAvailableTimes(availableTimes.filter(key=>key!==newDate-0+idx));
+            doCheck.filter(key=>key!==newDate-0+idx);
         }
         else {
             const elm = document.getElementById(newDate-0+idx);
             elm.classList.add("dragging")
-            setAvailableTimes([...availableTimes, newDate-0+idx]);
+            doCheck.push(newDate-0+idx);
         }
     };
 
     const handleDragEnd = () => {
         setIsDragging(false);
+        setAvailableTimes(doCheck)
         setDragging();
     };
 
@@ -56,7 +60,7 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
 
     weekArr.push(<td></td>);
     // 시작 끝 값을 수정해서 일정 변경
-    for(let i = 0; i < 10; i++){
+    for(let i = startTime; i < endTime; i++){
         const forSelect = [];
         const minute = i*30;
         const time = (String(Math.floor(minute/60)).padStart(2,"0"))+":"+(String(minute%60).padStart(2,"0"));
@@ -72,16 +76,23 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
                 
                 weekArr.push(<td className={cn}>{newDate.getDate()}</td>);
             }
-            
-            if(isContain(newDate-0+i)){
+            // console.log(newDate, startDate, endDate);
+            if(newDate < startDate || newDate > endDate){
                 forSelect.push(
-                    <TableCell k={newDate - 0 + i} cn={"dragging"} newDate={newDate} handleClick={handleClick} hds={handleDragStart} hdw={handleDragWhile} hde={handleDragEnd} i={i}/>
+                    <TableCell k={newDate - 0 + i} cn={"noDate"} newDate={newDate} i={i}/>
                 );
             }
             else{
-                forSelect.push(
-                    <TableCell k={newDate - 0 + i} newDate={newDate} handleClick={handleClick} hds={handleDragStart} hdw={handleDragWhile} hde={handleDragEnd} i={i}/>
-                );
+                if(isContain(newDate-0+i)){
+                    forSelect.push(
+                        <TableCell k={newDate - 0 + i} cn={"dragging"} newDate={newDate} handleClick={handleClick} hds={handleDragStart} hdw={handleDragWhile} hde={handleDragEnd} i={i}/>
+                    );
+                }
+                else{
+                    forSelect.push(
+                        <TableCell k={newDate - 0 + i} newDate={newDate} handleClick={handleClick} hds={handleDragStart} hdw={handleDragWhile} hde={handleDragEnd} i={i}/>
+                    );
+                }
             }
         }
 
@@ -98,15 +109,23 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
     );
 }
 
-function CalendarWeek2({ availableTimes, setAvailableTimes, isContain }){
-    const [currentDay, setCurrentDay] = useState(new Date());
+function CalendarWeek2({ availableTimes, setAvailableTimes, isContain, startDate, endDate, startTime, endTime, today }){
+    const [currentDay, setCurrentDay] = useState(today);
     
     // 일요일 0 시작
     const nowDay = currentDay.getDay();
     const nowDate = currentDay.getDate();
     const [nowMonth, setNowMonth] = useState(currentDay.getMonth() + 1); // zero-base
     const [nowYear, setNowYear] = useState(currentDay.getFullYear());
-    const [nowWeek, setNowWeek] = useState(1);
+
+    const getWeek = (date) => {
+        const currentDate = date.getDate();
+        const firstDay = new Date(date.setDate(1)).getDay();
+      
+        return Math.ceil((currentDate + firstDay) / 7);
+    };
+      
+    const [nowWeek, setNowWeek] = useState(getWeek(today));
 
     const firstDay = (new Date(nowYear, nowMonth - 1, 1)).getDay();
     const lastDay = (new Date(nowYear, nowMonth, 0)).getDay();
@@ -166,7 +185,7 @@ function CalendarWeek2({ availableTimes, setAvailableTimes, isContain }){
             <h1>{nowYear}</h1>
             <table className="calendarTable">
                 <MakeDay2/>
-                <CaculateWeek week={nowWeek} nowYear={nowYear} nowMonth={nowMonth}availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
+                <CaculateWeek week={nowWeek} nowYear={nowYear} nowMonth={nowMonth} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
             </table>
         </div>
     );

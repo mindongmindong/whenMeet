@@ -92,6 +92,10 @@ button:hover {
   background-color: red;
 }
 
+.calendarTable .noDate {
+  background-color: gray;
+}
+
 .title-box {
   text-align: center;
   border-width: 1px;
