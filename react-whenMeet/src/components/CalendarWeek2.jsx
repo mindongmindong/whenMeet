@@ -47,7 +47,7 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
 
     const handleClick = () => {
         for(let day = fDay; day <= eDay; day+=(60*60*24*1000)){
-            for(let indx = 0; indx < 10; indx++){
+            for(let indx = startTime; indx <= endTime; indx++){
                 const elm = document.getElementById(day + indx);
                 elm.classList.remove("dragging")
             }

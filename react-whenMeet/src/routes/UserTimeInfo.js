@@ -12,10 +12,10 @@ function UserTimeInfo() {
     const {id} = useParams();
 
     const [startTime, setStartTime] = useState(0);
-    const [endTime, setEndTiem] = useState(48);
+    const [endTime, setEndTiem] = useState(10);
     const [today, setToday] = useState(new Date());
     const [startDate, setStartDate] = useState(new Date(2023,10,30));
-    const [endDate, setEndDate] = useState(new Date(2023,11,4));
+    const [endDate, setEndDate] = useState(new Date(2023,11,2));
     
     
     const handleState = () => {
@@ -38,8 +38,25 @@ function UserTimeInfo() {
     }, [id]);
 
     const handleAlert = () => {
-        let sat = [...availableTimes].sort();
-        console.log(availableTimes);
+        // let sat = [...availableTimes].sort();
+        const sat = [];
+        // state에 따라서 가능한 시간을 선택한 거라면 그냥 넘어가고
+        // 불가능한 시간을 선택한 거라면 전부 날짜 범위에 맞춰서 뒤집어줘야 한다.
+        // 여기 수정해야함
+        if(!state){
+            for(let day = startDate - 0; day <= endDate - 0; day+=((60*60*24*1000))){
+                for(let time = startTime; time < endTime; time++){
+                    if(!availableTimes.includes(day+time)){
+                        sat.push(day+time);
+                    }
+                }
+            }
+        }
+        else{
+            sat.push(...availableTimes);
+        }
+        sat.sort();
+        console.log(state, sat);
 
         const aa = [];
         let t = [];
