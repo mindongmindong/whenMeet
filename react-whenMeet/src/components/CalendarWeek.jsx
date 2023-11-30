@@ -10,10 +10,20 @@ const CalendarWeek = ({
   maxParticipants,
   hoveredInfo,
   setHoveredInfo,
+  availableVotingStartTime,
+  availableVotingEndTime,
 }) => {
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
   const [weeks, setWeeks] = useState([]);
   const [schedule, setSchedule] = useState({});
+
+  const parseTime = (time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 2 + (minutes >= 30 ? 1 : 0); // 30분 단위로 계산
+  };
+
+  const startTimeSlot = parseTime(availableVotingStartTime);
+  const endTimeSlot = parseTime(availableVotingEndTime);
 
   const handlePrevWeek = () => {
     setCurrentWeekIndex(Math.max(0, currentWeekIndex - 1));
@@ -121,7 +131,8 @@ const CalendarWeek = ({
           </tr>
         </thead>
         <tbody>
-          {[...Array(48).keys()].map((timeSlot) => {
+          {[...Array(endTimeSlot - startTimeSlot + 1).keys()].map((i) => {
+            const timeSlot = startTimeSlot + i;
             const hour = Math.floor(timeSlot / 2);
             const minute = (timeSlot % 2) * 30;
             return (
