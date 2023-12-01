@@ -30,11 +30,11 @@ function MeetingInfoForm() {
         setEndVote(event.target.value);
     }
     const handleStartTimeChange = (selectedHour, selectedMinute) => {
-        setStartTime(`${selectedHour}:${selectedMinute}`);
+        setStartTime(`${selectedHour}:${selectedMinute}:00`);
     };
 
     const handleEndTimeChange = (selectedHour, selectedMinute) => {
-        setEndTime(`${selectedHour}:${selectedMinute}`);
+        setEndTime(`${selectedHour}:${selectedMinute}:00`);
     };
 
 
@@ -59,6 +59,8 @@ function MeetingInfoForm() {
                 transformedPurpose = 'ETC';
             }
             try {
+                console.log(startTime);
+                console.log(endTime);
                 const response = await axios.post("http://localhost:3000/meetings", {
                     title: title,
                     adminPassword: password,

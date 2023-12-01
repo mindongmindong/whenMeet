@@ -1,38 +1,24 @@
 import { useState } from "react";
-function TimeInput({onTimeChange}) {
-    const [hours, setHours] = useState("00");
-    const [minutes, setMinutes] = useState("00");
 
-    const handleHoursChange = (event) => {
-        setHours(event.target.value);
-        onTimeChange(event.target.value, minutes);
+function TimeInput({ onTimeChange }) {
+    const [time, setTime] = useState("");
+
+    const handleTimeChange = (event) => {
+        setTime(event.target.value);  // select의 value를 그대로 저장
+        onTimeChange(event.target.value.slice(0, 2), event.target.value.slice(3));
     };
-
-    const handleMinutesChange = (event) => {
-        setMinutes(event.target.value);
-        onTimeChange(hours, event.target.value);
-    };
-
 
     return (
         <div>
             <label>
-                시:
-                <select value={hours} onChange={handleHoursChange}>
-                    {Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, "0")).map((hour) => (
-                        <option key={hour} value={hour}>
-                            {hour}
-                        </option>
-                    ))}
-                </select>
-            </label>
-
-            <label>
-                분:
-                <select value={minutes} onChange={handleMinutesChange}>
-                    {Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, "0")).map((minute) => (
-                        <option key={minute} value={minute}>
-                            {minute}
+                <select value={time} onChange={handleTimeChange}>
+                    {Array.from({ length: 48 }, (_, i) => {
+                        const paddedHour = Math.floor(i / 2).toString().padStart(2, "0");
+                        const paddedMinute = (i % 2 === 0 ? "00" : "30");
+                        return `${paddedHour}:${paddedMinute}`;
+                    }).map((time) => (
+                        <option key={time} value={time}>
+                            {time}
                         </option>
                     ))}
                 </select>
@@ -40,4 +26,5 @@ function TimeInput({onTimeChange}) {
         </div>
     );
 }
+
 export default TimeInput;
