@@ -58,7 +58,7 @@ function MeetingInfoForm() {
                 transformedPurpose = 'ETC';
             }
             try {
-                const response = await axios.post("http://43.200.79.42:3000/meetings", {
+                const response = await axios.post("http://localhost:3000/meetings", {
                     title: title,
                     adminPassword: password,
                     purpose: transformedPurpose,

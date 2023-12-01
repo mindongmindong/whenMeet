@@ -11,6 +11,7 @@ function HomeParticipateForm() {
     const navigate = useNavigate();
     const { id } = useParams();
 
+
     const handleName = (event) => {
         setName(event.target.value);
     }
@@ -22,7 +23,7 @@ function HomeParticipateForm() {
     }
     const checkParticipantExistence = async()=>{
         try{
-            const response = await axios.get(`http://43.200.79.42:3000/meetings/${id}/participants/?name=${name}`);
+            const response = await axios.get(`http://localhost:3000/meetings/${id}/participants/?name=${name}`);
             return false;
         }
         catch(err){
@@ -39,12 +40,44 @@ function HomeParticipateForm() {
             let checkParticipant =  await checkParticipantExistence();
             if(checkParticipant){
                 try {
-                    const response = await axios.post(`http://43.200.79.42:3000/meetings/${id}/participants`, {
+                    const response = await axios.post(`http://localhost:3000/meetings/${id}/participants`, {
                         name: name,
                         password: password,
                         email: email
                     });
-                    navigate('UserTimeInfo', { state: { id } });
+                    try {
+                        const response = await axios.post(`http://localhost:3000/meetings/${id}/entry`,{
+                            name : name,
+                            password : password
+                        }, {
+                            withCredentials: true 
+                        });
+
+                        try{
+                            const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
+                            navigate('UserTimeInfo', { state: { id:id, startDate: response.data.startDate, endDate:response.data.endDate }});
+                        }
+                        catch(e){
+                            console.log(e);
+                        }
+                    }
+                    catch (error) {
+                        if (error.response) {
+                            if (error.response.status === 401) {
+                                alert('Password를 잘못 입력하였습니다');
+                            } else if (error.response.status === 404) {
+                                alert('해당하는 이름이 존재하지 않습니다');
+                            } 
+                            else if(error.response.status === 400){
+                                alert("비밀번호를 설정하셨습니다. 비밀번호를 입력해주세요")
+                            }
+                            else {
+                                alert(`Unexpected status code: ${error.response.status}`);
+                            }
+                        } else {
+                            console.error(error);
+                        }
+                    }
                 }
                 catch (error) {
                     console.error(error);
@@ -62,11 +95,19 @@ function HomeParticipateForm() {
         }
         else {
             try {
-                const response = await axios.post(`http://43.200.79.42:3000/meetings/${id}/entry`,{
+                const response = await axios.post(`http://localhost:3000/meetings/${id}/entry`,{
                     name : name,
                     password : password
+                }, {
+                    withCredentials: true 
                 });
-                navigate('UserTimeInfo', { state: { id } });
+                try{
+                    const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
+                    navigate('UserTimeInfo', { state: { id:id, startDate: response.data.startDate, endDate:response.data.endDate }});
+                }
+                catch(e){
+                    console.log(e);
+                }
             }
             catch (error) {
                 if (error.response) {

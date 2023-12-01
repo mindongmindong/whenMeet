@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import '../styles/Calendar.css'
 import MakeDay2 from "./MakeDay2";
 import TableCell from "./TableCell";
@@ -67,7 +67,7 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
 
         for(let j = 0; j < 7; j++){
             const d = (week - 1) * 7 + j - firstDay+1;
-            const newDate = new Date(nowYear, nowMonth-1, d);
+            const newDate = new Date(nowYear, nowMonth-1, d,9);
 
             if(i===0){
                 let cn = "cella";
@@ -76,7 +76,6 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
                 
                 weekArr.push(<td className={cn}>{newDate.getDate()}</td>);
             }
-            // console.log(newDate, startDate, endDate);
             if(newDate < startDate || newDate > endDate){
                 forSelect.push(
                     <TableCell k={newDate - 0 + i} cn={"noDate"} newDate={newDate} i={i}/>
@@ -111,12 +110,11 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
 
 function CalendarWeek2({ availableTimes, setAvailableTimes, isContain, startDate, endDate, startTime, endTime, today }){
     const [currentDay, setCurrentDay] = useState(today);
-    
     // 일요일 0 시작
-    const nowDay = currentDay.getDay();
-    const nowDate = currentDay.getDate();
-    const [nowMonth, setNowMonth] = useState(currentDay.getMonth() + 1); // zero-base
-    const [nowYear, setNowYear] = useState(currentDay.getFullYear());
+    const nowDay = startDate.getDay();
+    const nowDate = startDate.getDate();
+    const [nowMonth, setNowMonth] = useState(startDate.getMonth() + 1); // zero-base
+    const [nowYear, setNowYear] = useState(startDate.getFullYear());
 
     const getWeek = (date) => {
         const currentDate = date.getDate();
@@ -125,7 +123,9 @@ function CalendarWeek2({ availableTimes, setAvailableTimes, isContain, startDate
         return Math.ceil((currentDate + firstDay) / 7);
     };
       
-    const [nowWeek, setNowWeek] = useState(getWeek(today));
+
+    const [nowWeek, setNowWeek] = useState(getWeek(currentDay));
+
 
     const firstDay = (new Date(nowYear, nowMonth - 1, 1)).getDay();
     const lastDay = (new Date(nowYear, nowMonth, 0)).getDay();
@@ -155,7 +155,7 @@ function CalendarWeek2({ availableTimes, setAvailableTimes, isContain, startDate
         setNowWeek(newWeek);
         setNowMonth(newMonth);
         setNowYear(newYear);
-        setCurrentDay(new Date(nowYear, nowMonth - 1, 1*(nowWeek-1) + nowDay));
+        // setCurrentDay(new Date(nowYear, nowMonth - 1, 1*(nowWeek-1) + nowDay));
     }
     const nextWeek = () => {
         let newWeek = nowWeek + 1;
@@ -172,7 +172,7 @@ function CalendarWeek2({ availableTimes, setAvailableTimes, isContain, startDate
         setNowWeek(newWeek);
         setNowMonth(newMonth);
         setNowYear(newYear);
-        setCurrentDay(new Date(nowYear, nowMonth - 1, nowDate));
+        // setCurrentDay(new Date(nowYear, nowMonth - 1, nowDate));
     }
 
     return(

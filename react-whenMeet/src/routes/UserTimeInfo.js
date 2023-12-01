@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import CalendarWeek2 from "../components/CalendarWeek2"
 import "../styles/HomeMake.css"
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function UserTimeInfo() {
     const [state, setState] = useState(true);
@@ -11,34 +11,39 @@ function UserTimeInfo() {
     const [availableTimes, setAvailableTimes] = useState([]);
     const {id} = useParams();
 
+    const location = useLocation();
+
     const [startTime, setStartTime] = useState(0);
-    const [endTime, setEndTiem] = useState(10);
-    const [today, setToday] = useState(new Date());
-    const [startDate, setStartDate] = useState(new Date(2023,10,30));
-    const [endDate, setEndDate] = useState(new Date(2023,11,2));
+    const [endTime, setEndTime] = useState(10);
+
+    const [today, setToday] = useState(new Date(location.state.startDate));
+    const [startDate, setStartDate] = useState(new Date(location.state.startDate));
+    const [endDate, setEndDate] = useState(new Date(location.state.endDate));
     
-    
-    const handleState = () => {
-        setState((state) => !state);
+    const handleState1 = () => {
+        setState(true);
+    }
+    const handleState2 = () => {
+        setState(false);
     }
     const handleCalendar = (value) => {
         console.log('Selected Date:', value);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`http://43.200.79.42:3000/meetings/${id}/`);
-                console.log(response.data.title);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, [id]);
-
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
+            const nd = response.data.startDate.split("-");
+            setStartDate(new Date(nd[0]-0,nd[1]-1,nd[2]-0));
+            setToday(startDate);
+            const ed = response.data.endDate.split("-");
+            setEndDate(new Date(ed[0]-0,ed[1]-1,ed[2]-0));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
     const handleAlert = () => {
-        // let sat = [...availableTimes].sort();
         const sat = [];
         // state에 따라서 가능한 시간을 선택한 거라면 그냥 넘어가고
         // 불가능한 시간을 선택한 거라면 전부 날짜 범위에 맞춰서 뒤집어줘야 한다.
@@ -100,12 +105,12 @@ function UserTimeInfo() {
             <Button
                 type="button"
                 text="가능한 시간"
-                onClick={handleState}
+                onClick={handleState1}
             />
             <Button
                 type="button"
                 text="불가능한 시간"
-                onClick={handleState}
+                onClick={handleState2}
             />
             <CalendarWeek2 state={state} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} today={today} availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
             <Button
