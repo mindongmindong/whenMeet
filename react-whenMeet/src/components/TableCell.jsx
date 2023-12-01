@@ -18,7 +18,7 @@ export default function TableCell({k, cn, handleClick, newDate, hds, hdw, hde, i
             onDragStart={()=>hds(newDate, i, k)}
             onDragEnter={()=>hdw(newDate, i, k)}
             onDragEnd={()=>hde(newDate, i)}
-            onClick={()=>handleClick(newDate)}>
+            onClick={()=>handleClick(newDate,i,k)}>
             {value} </td>
         );
     }

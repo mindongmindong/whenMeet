@@ -3,7 +3,7 @@ import '../styles/Calendar.css'
 import MakeDay2 from "./MakeDay2";
 import TableCell from "./TableCell";
 
-function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTimes, isContain, startDate, endDate, startTime, endTime}){
+function CaculateWeek({ nowYear, nowMonth, week, availableSchedules, availableTimes, setAvailableTimes, isContain, startDate, endDate, startTime, endTime}){
     const startDay = new Date(nowYear, nowMonth - 1, 1);
     const lastDay = new Date(nowYear, nowMonth, 0);
     const firstDay = startDay.getDay();
@@ -20,17 +20,16 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
         setIsDragging(!isDragging);
     };
 
-    const doCheck=[...availableTimes];
+    let doCheck=availableTimes;
+    doCheck.sort();
     const handleDragWhile = (newDate, idx, comp) => {
         if(!isDragging)return;
 
-        console.log(newDate-0+idx);
-
         const elm2 = document.getElementById(comp);
-        if(elm2.classList.contains("dragging")){
+        if(isContain(newDate-0+idx) || elm2.classList.contains("dragging")){
             const elm = document.getElementById(newDate-0+idx);
             elm.classList.remove("dragging")
-            doCheck.filter(key=>key!==newDate-0+idx);
+            doCheck = doCheck.filter((key)=>key!==(newDate-0+idx));
         }
         else {
             const elm = document.getElementById(newDate-0+idx);
@@ -45,14 +44,29 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
         setDragging();
     };
 
-    const handleClick = () => {
-        for(let day = fDay; day <= eDay; day+=(60*60*24*1000)){
-            for(let indx = startTime; indx <= endTime; indx++){
-                const elm = document.getElementById(day + indx);
-                elm.classList.remove("dragging")
-            }
+    const handleClick = (newDate, idx, comp) => {
+        // for(let day = fDay; day <= eDay; day+=(60*60*24*1000)){
+        //     for(let indx = startTime; indx <= endTime; indx++){
+        //         const elm = document.getElementById(day + indx);
+        //         elm.classList.remove("dragging")
+        //     }
+        // }
+        // setAvailableTimes([])
+        
+        const elm2 = document.getElementById(comp);
+        // console.log(comp, elm2);
+        if(isContain(newDate-0+idx) || elm2.classList.contains("dragging")){
+            const elm = document.getElementById(newDate-0+idx);
+            elm.classList.remove("dragging")
+            doCheck = doCheck.filter((key)=>key!==(newDate-0+idx));
         }
-        setAvailableTimes([])
+        else {
+            const elm = document.getElementById(newDate-0+idx);
+            elm.classList.add("dragging")
+            doCheck.push(newDate-0+idx);
+        }
+
+        setAvailableTimes(doCheck)
     }
 
     const weekArr = [];
@@ -108,7 +122,7 @@ function CaculateWeek({ nowYear, nowMonth, week, availableTimes, setAvailableTim
     );
 }
 
-function CalendarWeek2({ availableTimes, setAvailableTimes, isContain, startDate, endDate, startTime, endTime, today }){
+function CalendarWeek2({ state, availableSchedules, availableTimes, setAvailableTimes, isContain, startDate, endDate, startTime, endTime, today }){
     const [currentDay, setCurrentDay] = useState(today);
     // 일요일 0 시작
     const nowDay = startDate.getDay();
@@ -183,9 +197,14 @@ function CalendarWeek2({ availableTimes, setAvailableTimes, isContain, startDate
                 <button onClick={nextWeek}>next</button>
             </div>
             <h1>{nowYear}</h1>
+            {
+                state ?
+                <span>가능한 시간</span> :
+                <span>불가능한 시간</span>
+            }
             <table className="calendarTable">
                 <MakeDay2/>
-                <CaculateWeek week={nowWeek} nowYear={nowYear} nowMonth={nowMonth} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
+                <CaculateWeek week={nowWeek} nowYear={nowYear} nowMonth={nowMonth} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} availableSchedules={availableSchedules} availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
             </table>
         </div>
     );

@@ -6,12 +6,20 @@ import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function UserTimeInfo() {
-    const [state, setState] = useState(true);
-    const [availableSchedules, setAvailableSchedules] = useState([]);
-    const [availableTimes, setAvailableTimes] = useState([]);
-    const {id} = useParams();
-
     const location = useLocation();
+    const [state, setState] = useState(true);
+    const [availableSchedules, setAvailableSchedules] = useState(location.state.schedules);
+
+    const at = [];
+    for(let key of availableSchedules){
+        const date = new Date(key.availableDate) - 0;
+        for(let t of key.availableTimes){
+            at.push(date+t);
+        }
+    }
+
+    const [availableTimes, setAvailableTimes] = useState(at);
+    const {id} = useParams();
 
     const [startTime, setStartTime] = useState(0);
     const [endTime, setEndTime] = useState(10);
@@ -43,7 +51,7 @@ function UserTimeInfo() {
         }
     };
     
-    const handleAlert = () => {
+    const handleAlert = async () => {
         const sat = [];
         // state에 따라서 가능한 시간을 선택한 거라면 그냥 넘어가고
         // 불가능한 시간을 선택한 거라면 전부 날짜 범위에 맞춰서 뒤집어줘야 한다.
@@ -91,9 +99,58 @@ function UserTimeInfo() {
         });
         
         setAvailableSchedules(compressedData);
-        console.log(availableSchedules);
+        if(location.state.schedules){
+            try {
+                const response = await axios.put(`http://localhost:3000/meetings/${id}/my/schedules/bulk`,{
+                    schedules: compressedData
+                });
+            }
+            catch (error) {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        alert('Password를 잘못 입력하였습니다');
+                    } else if (error.response.status === 404) {
+                        alert('해당하는 이름이 존재하지 않습니다');
+                    } 
+                    else if(error.response.status === 400){
+                        alert("비밀번호를 설정하셨습니다. 비밀번호를 입력해주세요")
+                    }
+                    else {
+                        alert(`Unexpected status code: ${error.response.status}`);
+                    }
+                } else {
+                    console.error(error);
+                }
+                
+            }
+        }
+        else{
+            try {
+                const response = await axios.post(`http://localhost:3000/meetings/${id}/my/schedules/bulk`,{
+                    schedules: compressedData
+                });
+            }
+            catch (error) {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        alert('Password를 잘못 입력하였습니다');
+                    } else if (error.response.status === 404) {
+                        alert('해당하는 이름이 존재하지 않습니다');
+                    } 
+                    else if(error.response.status === 400){
+                        alert("비밀번호를 설정하셨습니다. 비밀번호를 입력해주세요")
+                    }
+                    else {
+                        alert(`Unexpected status code: ${error.response.status}`);
+                    }
+                } else {
+                    console.error(error);
+                }
+                
+            }
+        }
         
-        console.log(state);
+
     }
 
     const isContain = (value) => {
@@ -112,7 +169,7 @@ function UserTimeInfo() {
                 text="불가능한 시간"
                 onClick={handleState2}
             />
-            <CalendarWeek2 state={state} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} today={today} availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
+            <CalendarWeek2 state={state} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} today={today} availableSchedules={availableSchedules} availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} isContain={isContain} />
             <Button
                 type="submit"
                 text="시작하기"
