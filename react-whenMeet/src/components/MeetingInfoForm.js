@@ -2,6 +2,7 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
+import TimeInput from "./TimeInput";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -9,8 +10,8 @@ function MeetingInfoForm() {
     const [meetingPurpose, setMeetingPurpose] = useState("");
     const [number, setNumber] = useState();
     const [endVote, setEndVote] = useState("");
-    const [start, setStart] = useState();
-    const [end, setEnd] = useState();
+    const [startTime, setStartTime] = useState();
+    const [endTime, setEndTime] = useState();
     const navigate = useNavigate();
     const location = useLocation();
     const { title, password } = location.state;
@@ -28,14 +29,14 @@ function MeetingInfoForm() {
     const handleVoteEnd = (event) => {
         setEndVote(event.target.value);
     }
+    const handleStartTimeChange = (selectedHour, selectedMinute) => {
+        setStartTime(`${selectedHour}:${selectedMinute}`);
+    };
 
-    const handleStart = (event) => {
-        setStart(event.target.value);
-    }
+    const handleEndTimeChange = (selectedHour, selectedMinute) => {
+        setEndTime(`${selectedHour}:${selectedMinute}`);
+    };
 
-    const handleEnd = (event) => {
-        setEnd(event.target.value);
-    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -64,6 +65,8 @@ function MeetingInfoForm() {
                     purpose: transformedPurpose,
                     startDate: usingDate.startDate,
                     endDate: usingDate.endDate,
+                    availableVotingStartTime : startTime,
+                    availableVotingEndTime : endTime,
                     maxParticipants: number,
                     voteExpiresAt: endVote
                 });
@@ -95,21 +98,10 @@ function MeetingInfoForm() {
 
                 <Calendar usingDate={usingDate} setUsingDate={setUsingDate} />
                 <div className="timeStartEnd">
-                    시작:
-                    <Input
-                        type="time"
-                        value={start}
-                        onChange={handleStart}
-                        placeholder="시작"
-                    />
-                    종료:
-                    <Input
-                        type="time"
-                        value={end}
-                        onChange={handleEnd}
-                        placeholder="종료"
-                    />
-
+                    투표 가능 시간
+                    <TimeInput onTimeChange={handleStartTimeChange}/>
+                    ~
+                    <TimeInput onTimeChange={handleEndTimeChange}/>
                 </div>
                 <Input
                     type="number"
