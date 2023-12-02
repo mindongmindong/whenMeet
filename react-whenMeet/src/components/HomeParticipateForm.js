@@ -57,10 +57,12 @@ function HomeParticipateForm() {
                             const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
                             const startDate = response.data.startDate;
                             const endDate = response.data.endDate;
+                            const startTime = response.data.availableVotingStartTime;
+                            const endTime = response.data.availableVotingEndTime;
                             try{
                                 const response = await axios.get(`http://localhost:3000/meetings/${id}/my/schedules`);
                                 // console.log(startDate, endDate);
-                                navigate('UserTimeInfo', { state: { id:id, startDate: startDate, endDate: endDate, schedules:response.data.schedules }});
+                                navigate('UserTimeInfo', { state: { id:id, startTime:startTime, endTime:endTime, startDate: startDate, endDate: endDate, schedules:response.data.schedules }});
                             }
                             catch(e){
                                 console.log(e);
@@ -114,10 +116,12 @@ function HomeParticipateForm() {
                     const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
                     const startDate = response.data.startDate;
                     const endDate = response.data.endDate;
+                    const startTime = response.data.availableVotingStartTime;
+                    const endTime = response.data.availableVotingEndTime;
                     try{
                         const response = await axios.get(`http://localhost:3000/meetings/${id}/my/schedules`);
                         // console.log(startDate, endDate);
-                        navigate('UserTimeInfo', { state: { id:id, startDate: startDate, endDate: endDate, schedules:response.data.schedules }});
+                        navigate('UserTimeInfo', { state: { id:id, startTime:startTime, endTime:endTime, startDate: startDate, endDate: endDate, schedules:response.data.schedules }});
                     }
                     catch(e){
                         console.log(e);

@@ -21,8 +21,23 @@ function UserTimeInfo() {
     const [availableTimes, setAvailableTimes] = useState(at);
     const {id} = useParams();
 
-    const [startTime, setStartTime] = useState(0);
-    const [endTime, setEndTime] = useState(10);
+    let st = 0;
+    let et = 48;
+
+    if(location.state.startTime){
+        st = location.state.startTime;
+        const sta = st.split(':');
+        st = sta[0]*2+sta[1]/30;
+    }
+    if(location.state.endTime){
+        et = location.state.endTime;
+        const eta = et.split(':');
+        et = eta[0]*2+eta[1]/30;
+    }
+    
+    const [startTime, setStartTime] = useState(st);
+    const [endTime, setEndTime] = useState(et);
+
 
     const [today, setToday] = useState(new Date(location.state.startDate));
     const [startDate, setStartDate] = useState(new Date(location.state.startDate));
@@ -69,7 +84,6 @@ function UserTimeInfo() {
             sat.push(...availableTimes);
         }
         sat.sort();
-        console.log(state, sat);
 
         const aa = [];
         let t = [];
@@ -104,6 +118,7 @@ function UserTimeInfo() {
                 const response = await axios.put(`http://localhost:3000/meetings/${id}/my/schedules/bulk`,{
                     schedules: compressedData
                 });
+                alert("제출 완료");
             }
             catch (error) {
                 if (error.response) {
@@ -121,6 +136,7 @@ function UserTimeInfo() {
                 } else {
                     console.error(error);
                 }
+                alert("제출 실패");
                 
             }
         }
