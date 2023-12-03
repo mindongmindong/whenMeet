@@ -342,7 +342,7 @@ function ResultMakeForm() {
   const handlePasswordSubmit = async (password) => {
     setIsModalOpen(false);
     try {
-      await axios.post(`http://localhost:3000/meetings/${meeting_id}/close`, {
+      await axios.patch(`http://localhost:3000/meetings/${meeting_id}/close`, {
         adminPassword: password,
       });
       navigate(`/resultend/${meeting_id}`);
