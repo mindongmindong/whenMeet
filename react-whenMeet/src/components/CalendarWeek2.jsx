@@ -83,7 +83,7 @@ function CaculateWeek({ nowYear, nowMonth, week, availableSchedules, availableTi
             const d = (week - 1) * 7 + j - firstDay+1;
             const newDate = new Date(nowYear, nowMonth-1, d,9);
 
-            if(i===0){
+            if(i===startTime){
                 let cn = "cella";
                 if(d < 1)cn = "cellb"
                 else if(d > lastDate)cn = "cellb"
