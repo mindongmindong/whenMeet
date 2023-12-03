@@ -7,6 +7,7 @@ const CalendarWeek = ({
   participants,
   startDate,
   endDate,
+  currentParticipants,
   maxParticipants,
   hoveredInfo,
   setHoveredInfo,
@@ -18,6 +19,11 @@ const CalendarWeek = ({
   const [schedule, setSchedule] = useState({});
 
   const parseTime = (time) => {
+    // 자정("00:00:00")을 확인하여 48을 반환
+    if (time === "00:00:00") {
+      return 48;
+    }
+
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 2 + (minutes >= 30 ? 1 : 0); // 30분 단위로 계산
   };
@@ -82,10 +88,14 @@ const CalendarWeek = ({
     setSchedule(newSchedule);
   }, [participants, startDate, endDate]);
 
-  const calculateOpacity = (dateString, timeString) => {
+  const calculateOpacity = (dateString, timeString, currentParticipants) => {
     const availableCount =
       schedule[dateString]?.filter((s) => s.time === timeString).length || 0;
-    return 100 - (availableCount / maxParticipants) * 100;
+
+    // currentParticipants가 0이거나 null일 경우를 대비해 기본값 1 설정
+    const participantsCount = currentParticipants || 1;
+
+    return 100 - (availableCount / participantsCount) * 100;
   };
 
   const handleMouseEnter = (dateString, timeString) => {

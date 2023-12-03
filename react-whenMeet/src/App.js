@@ -23,7 +23,8 @@ function App() {
         <Route path="/meetinginfo" element={<MeetingInfo />}></Route>
         <Route path="/result/:meeting_id" element={<ResultMake />}></Route>
         //결과확인페이지
-        <Route path="/resultend" element={<ResultEnd />}></Route>// 투표 종료
+        <Route path="/resultend/:meeting_id" element={<ResultEnd />}></Route>//
+        투표 종료
         <Route path="/" element={<HomeMake />}>
           {" "}
         </Route>

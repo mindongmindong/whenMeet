@@ -96,12 +96,17 @@ function ResultMakeForm() {
       ) : (
         <div className="column-container">
           <h1 className="title-box">{meetingData?.title}</h1>
+
           <div>
-            현재 완료한 인원수 {currentParticipants} / {maxParticipants}
+            현재 완료한 인원수 {currentParticipants}
+            {maxParticipants != null && ` / ${maxParticipants}`}
           </div>
+
           <div>종료까지 남은 시간 {timeLeft}</div>
           <button onClick={handleEdit}>수정하기</button>
-          <button onClick={() => navigate("/resultend")}>투표 종료하기</button>
+          <button onClick={() => navigate(`/resultend/${meeting_id}`)}>
+            투표 종료하기
+          </button>
         </div>
       )}
       {meetingData && (
@@ -111,6 +116,7 @@ function ResultMakeForm() {
               participants={meetingData.participants}
               startDate={meetingData.startDate}
               endDate={meetingData.endDate}
+              currentParticipants={meetingData.currentParticipants}
               maxParticipants={meetingData.maxParticipants}
               hoveredInfo={hoveredInfo}
               setHoveredInfo={setHoveredInfo}
