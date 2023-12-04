@@ -21,24 +21,25 @@ function HomeParticipateForm() {
     const handleEmail = (event) => {
         setEmail(event.target.value);
     }
-    const checkParticipantExistence = async()=>{
-        try{
+    const checkParticipantExistence = async () => {
+        try {
             const response = await axios.get(`http://localhost:3000/meetings/${id}/participants/?name=${name}`);
             return false;
         }
-        catch(err){
+        catch (err) {
             return true;
         }
     }
 
-    const newHandleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         if (name === "") {
             alert('이름을 입력하세요')
         }
         else {
-            let checkParticipant =  await checkParticipantExistence();
-            if(checkParticipant){
+            let checkParticipant = await checkParticipantExistence();
+            console.log(checkParticipant);
+            if (checkParticipant) { // DB에 해당 이름이 존재하지 않으면
                 try {
                     const response = await axios.post(`http://localhost:3000/meetings/${id}/participants`, {
                         name: name,
@@ -46,29 +47,29 @@ function HomeParticipateForm() {
                         email: email
                     });
                     try {
-                        const response = await axios.post(`http://localhost:3000/meetings/${id}/entry`,{
-                            name : name,
-                            password : password
+                        const response = await axios.post(`http://localhost:3000/meetings/${id}/entry`, {
+                            name: name,
+                            password: password
                         }, {
-                            withCredentials: true 
+                            withCredentials: true
                         });
 
-                        try{
+                        try {
                             const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
                             const startDate = response.data.startDate;
                             const endDate = response.data.endDate;
                             const startTime = response.data.availableVotingStartTime;
                             const endTime = response.data.availableVotingEndTime;
-                            try{
+                            try {
                                 const response = await axios.get(`http://localhost:3000/meetings/${id}/my/schedules`);
                                 // console.log(startDate, endDate);
-                                navigate('UserTimeInfo', { state: { id:id, startTime:startTime, endTime:endTime, startDate: startDate, endDate: endDate, schedules:response.data.schedules }});
+                                navigate('UserTimeInfo', { state: { id: id, startTime: startTime, endTime: endTime, startDate: startDate, endDate: endDate, schedules: response.data.schedules } });
                             }
-                            catch(e){
+                            catch (e) {
                                 console.log(e);
                             }
                         }
-                        catch(e){
+                        catch (e) {
                             console.log(e);
                         }
                     }
@@ -78,8 +79,8 @@ function HomeParticipateForm() {
                                 alert('Password를 잘못 입력하였습니다');
                             } else if (error.response.status === 404) {
                                 alert('해당하는 이름이 존재하지 않습니다');
-                            } 
-                            else if(error.response.status === 400){
+                            }
+                            else if (error.response.status === 400) {
                                 alert("비밀번호를 설정하셨습니다. 비밀번호를 입력해주세요")
                             }
                             else {
@@ -94,60 +95,61 @@ function HomeParticipateForm() {
                     console.error(error);
                 }
             }
-            else{
-                alert('이미 존재하는 이름입니다.');
-            }
-        }
-    };
-    const oldHandleSubmit = async (event) => {
-        event.preventDefault();
-        if (name === "") {
-            alert('이름을 입력하세요')
-        }
-        else {
-            try {
-                const response = await axios.post(`http://localhost:3000/meetings/${id}/entry`,{
-                    name : name,
-                    password : password
-                }, {
-                    withCredentials: true 
-                });
-                try{
-                    const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
-                    const startDate = response.data.startDate;
-                    const endDate = response.data.endDate;
-                    const startTime = response.data.availableVotingStartTime;
-                    const endTime = response.data.availableVotingEndTime;
-                    try{
-                        const response = await axios.get(`http://localhost:3000/meetings/${id}/my/schedules`);
-                        // console.log(startDate, endDate);
-                        navigate('UserTimeInfo', { state: { id:id, startTime:startTime, endTime:endTime, startDate: startDate, endDate: endDate, schedules:response.data.schedules }});
+            else { // 이미 DB에 참여자가 존재하는 경우
+                try {
+                    const response = await axios.get(`http://localhost:3000/meetings/${id}/my/schedules`); //투표 여부 확인을 위해
+                    if (response.data.schedules.length) { // 투표를 진행하였으면 결과 페이지로 이동
+                        navigate('ResultEnd');
                     }
-                    catch(e){
-                        console.log(e);
+                    else { // 투표를 안했으면 투표페이지로 이동
+                        try { // 쿠키 재생성
+                            await axios.post(`http://localhost:3000/meetings/${id}/entry`, {
+                                name: name,
+                                password: password
+                            }, {
+                                withCredentials: true
+                            });
+                            try {
+                                const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
+                                const startDate = response.data.startDate;
+                                const endDate = response.data.endDate;
+                                const startTime = response.data.availableVotingStartTime;
+                                const endTime = response.data.availableVotingEndTime;
+                                try {
+                                    const response = await axios.get(`http://localhost:3000/meetings/${id}/my/schedules`);
+                                    // console.log(startDate, endDate);
+                                    navigate('UserTimeInfo', { state: { id: id, startTime: startTime, endTime: endTime, startDate: startDate, endDate: endDate, schedules: response.data.schedules } });
+                                }
+                                catch (e) {
+                                    console.log(e);
+                                }
+                            }
+                            catch (e) {
+                                console.log(e);
+                            }
+                        }
+                        catch (error) {
+                            if (error.response) {
+                                if (error.response.status === 401) {
+                                    alert('Password를 잘못 입력하였습니다');
+                                } else if (error.response.status === 404) {
+                                    alert('해당하는 이름이 존재하지 않습니다');
+                                }
+                                else if (error.response.status === 400) {
+                                    alert("비밀번호를 설정하셨습니다. 비밀번호를 입력해주세요")
+                                }
+                                else {
+                                    alert(`Unexpected status code: ${error.response.status}`);
+                                }
+                            } else {
+                                console.error(error);
+                            }
+                        }
                     }
                 }
-                catch(e){
-                    console.log(e);
+                catch (error) {
+                    console.err(error);
                 }
-            }
-            catch (error) {
-                if (error.response) {
-                    if (error.response.status === 401) {
-                        alert('Password를 잘못 입력하였습니다');
-                    } else if (error.response.status === 404) {
-                        alert('해당하는 이름이 존재하지 않습니다');
-                    } 
-                    else if(error.response.status === 400){
-                        alert("비밀번호를 설정하셨습니다. 비밀번호를 입력해주세요")
-                    }
-                    else {
-                        alert(`Unexpected status code: ${error.response.status}`);
-                    }
-                } else {
-                    console.error(error);
-                }
-                
             }
         }
     };
@@ -156,7 +158,6 @@ function HomeParticipateForm() {
         <form>
             <div>
                 <h1>투표에 참여하기</h1>
-                {console.log({id})}
                 <Input
                     type="text"
                     value={name}
@@ -177,13 +178,8 @@ function HomeParticipateForm() {
                 />
                 <Button
                     type='submit'
-                    text='신규참여'
-                    onClick={newHandleSubmit}
-                />
-                <Button
-                    type='submit'
-                    text='재참여'
-                    onClick={oldHandleSubmit}
+                    text='참여'
+                    onClick={handleSubmit}
                 />
             </div>
         </form>

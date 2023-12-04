@@ -23,7 +23,13 @@ function MeetingInfoForm() {
     }
 
     const handleNumber = (event) => {
-        setNumber(event.target.value);
+        const inputValue = event.target.value;
+        if(inputValue >= 0){
+            setNumber(inputValue);
+        }
+        else{
+            alert("양수만을 입력하세요");
+        }
     }
 
     const handleVoteEnd = (event) => {
@@ -67,8 +73,8 @@ function MeetingInfoForm() {
                     purpose: transformedPurpose,
                     startDate: usingDate.startDate,
                     endDate: usingDate.endDate,
-                    availableVotingStartTime : startTime,
-                    availableVotingEndTime : endTime,
+                    availableVotingStartTime: startTime,
+                    availableVotingEndTime: endTime,
                     maxParticipants: number,
                     voteExpiresAt: endVote
                 });
@@ -101,9 +107,9 @@ function MeetingInfoForm() {
                 <Calendar usingDate={usingDate} setUsingDate={setUsingDate} />
                 <div className="timeStartEnd">
                     투표 가능 시간
-                    <TimeInput onTimeChange={handleStartTimeChange}/>
+                    <TimeInput onTimeChange={handleStartTimeChange} />
                     ~
-                    <TimeInput onTimeChange={handleEndTimeChange}/>
+                    <TimeInput onTimeChange={handleEndTimeChange} />
                 </div>
                 <Input
                     type="number"
