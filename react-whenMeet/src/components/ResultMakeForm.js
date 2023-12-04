@@ -132,10 +132,16 @@ function ResultMakeForm() {
       ) : (
         <div className="column-container">
           <h1 className="title-box">{meetingData?.title}</h1>
-          <div>
-            현재 완료한 인원수 {meetingData?.currentParticipants} /{" "}
-            {meetingData?.maxParticipants}
-          </div>
+          {meetingData.maxParticipants && (
+            <div>
+              현재 완료한 인원수 {meetingData?.currentParticipants} /{" "}
+              {meetingData?.maxParticipants}
+            </div>
+          )}
+          {!meetingData && (
+            <div>현재 완료한 인원수 {meetingData?.currentParticipants}</div>
+          )}
+
           <div>종료까지 남은 시간 {timeLeft}</div>
           <button onClick={handleEdit}>수정하기</button>
           <button onClick={closeMeeting}>투표 종료하기</button>
