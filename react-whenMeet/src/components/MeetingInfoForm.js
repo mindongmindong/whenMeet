@@ -67,6 +67,7 @@ function MeetingInfoForm() {
             try {
                 console.log(startTime);
                 console.log(endTime);
+                console.log(usingDate);
                 const response = await axios.post("http://localhost:3000/meetings", {
                     title: title,
                     adminPassword: password,
