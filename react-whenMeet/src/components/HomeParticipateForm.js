@@ -97,32 +97,26 @@ function HomeParticipateForm() {
             }
             else { // 이미 DB에 참여자가 존재하는 경우
                 try {
+                    await axios.post(`http://localhost:3000/meetings/${id}/entry`, {
+                        name: name,
+                        password: password
+                    }, {
+                        withCredentials: true
+                    });
                     const response = await axios.get(`http://localhost:3000/meetings/${id}/my/schedules`); //투표 여부 확인을 위해
-                    if (response.data.schedules.length) { // 투표를 진행하였으면 결과 페이지로 이동
-                        navigate('ResultEnd');
+                    const schedules = response.data.schedules;
+                    if (schedules.length) { // 투표를 진행하였으면 결과 페이지로 이동
+                        navigate(`/result/${id}`);
                     }
                     else { // 투표를 안했으면 투표페이지로 이동
                         try { // 쿠키 재생성
-                            await axios.post(`http://localhost:3000/meetings/${id}/entry`, {
-                                name: name,
-                                password: password
-                            }, {
-                                withCredentials: true
-                            });
                             try {
                                 const response = await axios.get(`http://localhost:3000/meetings/${id}/`);
                                 const startDate = response.data.startDate;
                                 const endDate = response.data.endDate;
                                 const startTime = response.data.availableVotingStartTime;
                                 const endTime = response.data.availableVotingEndTime;
-                                try {
-                                    const response = await axios.get(`http://localhost:3000/meetings/${id}/my/schedules`);
-                                    // console.log(startDate, endDate);
-                                    navigate('UserTimeInfo', { state: { id: id, startTime: startTime, endTime: endTime, startDate: startDate, endDate: endDate, schedules: response.data.schedules } });
-                                }
-                                catch (e) {
-                                    console.log(e);
-                                }
+                                navigate('UserTimeInfo', { state: { id: id, startTime: startTime, endTime: endTime, startDate: startDate, endDate: endDate, schedules: schedules } });
                             }
                             catch (e) {
                                 console.log(e);
@@ -148,7 +142,21 @@ function HomeParticipateForm() {
                     }
                 }
                 catch (error) {
-                    console.err(error);
+                    if (error.response) {
+                        if (error.response.status === 401) {
+                            alert('Password를 잘못 입력하였습니다');
+                        } else if (error.response.status === 404) {
+                            alert('해당하는 이름이 존재하지 않습니다');
+                        }
+                        else if (error.response.status === 400) {
+                            alert("비밀번호를 설정하셨습니다. 비밀번호를 입력해주세요")
+                        }
+                        else {
+                            alert(`Unexpected status code: ${error.response.status}`);
+                        }
+                    } else {
+                        console.error(error);
+                    }
                 }
             }
         }
