@@ -60,12 +60,19 @@ export default function ResultEndForm() {
   const handlePasswordSubmit = async (password) => {
     setIsModalOpen(false);
     try {
-      await axios.patch(
+      const response = await axios.patch(
         `http://localhost:3000/meetings/${meeting_id}/confirm-time`,
         {
           adminPassword: password,
         }
       );
+
+      if (response.data && response.data.confirmedTime) {
+        setMeetingData((prevData) => ({
+          ...prevData,
+          confirmedTime: response.data.confirmedTime,
+        }));
+      }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         alert("비밀번호가 틀렸습니다.");
@@ -88,7 +95,7 @@ export default function ResultEndForm() {
         <h1 className="title-box">{meetingData.title}</h1>
         <p>투표가 종료되었습니다.</p>
 
-        {meetingData.isClosed ? (
+        {meetingData.confirmedTime && (
           <div>
             <p style={{ color: "blue" }}>약속 시간은 {selectedDate}입니다.</p>
             <div>
@@ -96,7 +103,8 @@ export default function ResultEndForm() {
               <h3>{meetingData.currentParticipants}</h3>
             </div>
           </div>
-        ) : (
+        )}
+        {!meetingData.confirmedTime && (
           <span className="closedFalse">
             <p>
               {meetingData.purpose && purposeText[meetingData.purpose]}를 하는
