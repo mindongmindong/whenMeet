@@ -7,6 +7,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function UserTimeInfo() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [state, setState] = useState(true);
     const [availableSchedules, setAvailableSchedules] = useState(location.state.schedules);
 
@@ -119,6 +120,8 @@ function UserTimeInfo() {
                     schedules: compressedData
                 });
                 alert("제출 완료");
+                navigate(`/result/${id}`);
+                
             }
             catch (error) {
                 if (error.response) {
@@ -145,6 +148,8 @@ function UserTimeInfo() {
                 const response = await axios.post(`http://localhost:3000/meetings/${id}/my/schedules/bulk`,{
                     schedules: compressedData
                 });
+                alert("제출 완료");
+                navigate(`/result/${id}`);
             }
             catch (error) {
                 if (error.response) {
