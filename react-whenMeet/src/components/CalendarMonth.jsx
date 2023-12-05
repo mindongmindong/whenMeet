@@ -352,13 +352,15 @@ function CalendarMonth({ usingDate, setUsingDate }) {
 
   return (
     <div className="calendar">
-      <h1>달력</h1>
-      <MakeHeader
-        nowMonth={nowMonth}
-        prevMonth={prevMonth}
-        nextMonth={nextMonth}
-      ></MakeHeader>
-      <h1>{nowYear}</h1>
+      {/* <h1>달력</h1> */}
+      <div className="cc">
+        <MakeHeader
+          nowMonth={nowMonth}
+          prevMonth={prevMonth}
+          nextMonth={nextMonth}
+          nowYear={nowYear}
+        ></MakeHeader>
+      </div>
       <table className="calendarTable">
         <MakeDay />
         <MakeCell
