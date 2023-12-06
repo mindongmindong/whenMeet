@@ -41,9 +41,7 @@ const CalendarWeek = ({
 
   useEffect(() => {
     const start = new Date(startDate);
-    start.setDate(
-      start.getDate() - (start.getDay() === 0 ? 6 : start.getDay() - 1)
-    );
+    start.setDate(start.getDate() - start.getDay());
     const end = new Date(endDate);
 
     let weeksTemp = [];
@@ -164,7 +162,11 @@ const CalendarWeek = ({
                   const timeString = `${hour
                     .toString()
                     .padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
-                  const opacity = calculateOpacity(dateString, timeString);
+                  const opacity = calculateOpacity(
+                    dateString,
+                    timeString,
+                    currentParticipants
+                  );
                   const cellStyle = { opacity: `${opacity}%` };
                   return (
                     <td

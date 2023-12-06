@@ -1,15 +1,73 @@
-import CalendarWeek from "./CalendarWeek";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import CalendarWeek from "./CalendarWeek";
+import PasswordModal from "./PasswordModal.jsx";
 import "../styles/ResultEnd.css";
 import "../styles/CalendarWeek.css";
-import axios from "axios";
-import PasswordModal from "./PasswordModal.jsx";
+
+function formatDateTime(dateTime) {
+  console.log("원본 시간 데이터:", dateTime); // 원본 데이터 로그
+
+  const parts = dateTime.split("-");
+  const datePart = parts.slice(0, 3).join("-");
+  const timePart = parseInt(parts[3], 10);
+  const hours = Math.floor(timePart / 2);
+  const minutes = (timePart % 2) * 30;
+
+  // UTC 시간으로 변환
+  const utcDate = new Date(
+    `${datePart}T${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:00Z`
+  );
+
+  const year = utcDate.getUTCFullYear();
+  const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
+  const day = utcDate.getUTCDate().toString().padStart(2, "0");
+  const utcHours = utcDate.getUTCHours().toString().padStart(2, "0");
+  const utcMinutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
+
+  const formattedDateTime = `${year}년 ${month}월 ${day}일 ${utcHours}시 ${utcMinutes}분`;
+
+  return formattedDateTime;
+}
+
+function formatConfirmedTime(isoString) {
+  const utcDate = new Date(isoString);
+  const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // UTC+9 시간을 더함
+
+  const year = kstDate.getFullYear();
+  const month = (kstDate.getMonth() + 1).toString().padStart(2, "0");
+  const day = kstDate.getDate().toString().padStart(2, "0");
+  const hours = kstDate.getHours().toString().padStart(2, "0");
+  const minutes = kstDate.getMinutes().toString().padStart(2, "0");
+
+  return (
+    `${year}년 ${month}월 ${day}일 ${hours}시` +
+    (minutes !== "00" ? ` ${minutes}분` : "")
+  );
+}
+
+function convertToISOFormat(dateTimeString) {
+  const parts = dateTimeString.split("-");
+  const datePart = parts.slice(0, 3).join("-");
+  const timePart = parts[3];
+  const hours = Math.floor(parseInt(timePart, 10) / 2);
+  const minutes = (parseInt(timePart, 10) % 2) * 30;
+
+  // 지역 시간을 생성 (KST)
+  const localDate = new Date(`${datePart} ${hours}:${minutes}:00`);
+  // UTC 시간으로 변환
+  const utcDate = new Date(localDate.getTime() - 9 * 60 * 60 * 1000);
+
+  return utcDate.toISOString();
+}
 
 export default function ResultEndForm() {
   const [meetingData, setMeetingData] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
-  const possibleDates = ["23.07.01 ~~~", "23.07.02 ~~~", "23.07.03 ~~~"];
+  const [possibleDates, setPossibleDates] = useState([]);
   const [hoveredInfo, setHoveredInfo] = useState(null);
   const { meeting_id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,58 +78,86 @@ export default function ResultEndForm() {
     FOOD: "식사",
     ETC: "기타",
   };
+  const fetchMeetingData = async () => {
+    try {
+      const response = await fetch(`/meetings/${meeting_id}/details`);
+      const data = await response.json();
+      setMeetingData(data);
+
+      // 가능한 시간 집계
+      let availabilityMap = {};
+      data.participants.forEach((participant) => {
+        participant.availableSchedules.forEach((schedule) => {
+          schedule.availableTimes.forEach((time) => {
+            const dateTimeKey = schedule.availableDate + "-" + time;
+            if (!availabilityMap[dateTimeKey]) {
+              availabilityMap[dateTimeKey] = 0;
+            }
+            availabilityMap[dateTimeKey]++;
+          });
+        });
+      });
+
+      // 가장 많이 겹치는 시간 찾기
+      const sortedAvailability = Object.entries(availabilityMap).sort(
+        (a, b) => b[1] - a[1]
+      );
+
+      // 겹치는 시간이 가장 많은 상위 항목만 뽑기
+      const mostAvailableTimes = sortedAvailability
+        .filter((item, index, arr) => item[1] === arr[0][1])
+        .map((item) => item[0]);
+
+      setPossibleDates(mostAvailableTimes);
+    } catch (error) {
+      console.error("API 호출 중 에러 발생:", error);
+    }
+  };
+  useEffect(() => {
+    fetchMeetingData();
+  }, [meeting_id]);
 
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
-  useEffect(() => {
-    const fetchMeetingData = async () => {
-      try {
-        const response = await fetch(`/meetings/${meeting_id}/details`);
-        if (!response.ok) {
-          throw new Error("API 호출 오류");
-        }
-        const data = await response.json();
-        setMeetingData(data);
 
-        setSelectedDate(
-          data.participants[0].availableSchedules[0].availableDate
-        );
-      } catch (error) {
-        console.error("API 호출 중 에러 발생:", error);
-      }
-    };
-
-    if (meeting_id) {
-      fetchMeetingData();
+  const confirmSelectedTime = () => {
+    if (!selectedDate) {
+      alert("시간을 선택해주세요.");
+      return;
     }
-  }, [meeting_id]);
-
-  if (!meetingData) {
-    return <div>로딩 중...</div>;
-  }
-  const closeMeeting = () => {
     setIsModalOpen(true);
+  };
+
+  const handleRandomConfirm = () => {
+    if (possibleDates.length > 0) {
+      const randomIndex = Math.floor(Math.random() * possibleDates.length);
+      const randomDateTime = possibleDates[randomIndex];
+      setSelectedDate(randomDateTime);
+      setIsModalOpen(true);
+    } else {
+      alert("선택 가능한 날짜와 시간이 없습니다.");
+    }
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
+
   const handlePasswordSubmit = async (password) => {
     setIsModalOpen(false);
     try {
+      const confirmedTimeISO = convertToISOFormat(selectedDate);
       const response = await axios.patch(
         `http://localhost:3000/meetings/${meeting_id}/confirm-time`,
         {
           adminPassword: password,
+          confirmedTime: confirmedTimeISO,
         }
       );
 
       if (response.data && response.data.confirmedTime) {
-        setMeetingData((prevData) => ({
-          ...prevData,
-          confirmedTime: response.data.confirmedTime,
-        }));
+        await fetchMeetingData();
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -81,7 +167,10 @@ export default function ResultEndForm() {
       }
     }
   };
-
+  if (!meetingData) {
+    return <div>로딩 중...</div>;
+  }
+  console.log(meetingData.confirmedTime);
   return (
     <div
       style={{
@@ -97,7 +186,10 @@ export default function ResultEndForm() {
 
         {meetingData.confirmedTime && (
           <div>
-            <p style={{ color: "blue" }}>약속 시간은 {selectedDate}입니다.</p>
+            <p style={{ color: "blue" }}>
+              약속 시간은 {formatConfirmedTime(meetingData.confirmedTime)}
+              입니다.
+            </p>
             <div>
               <h2 style={{ justifyContent: "center" }}>총 참여한 인원수</h2>
               <h3>{meetingData.currentParticipants}</h3>
@@ -112,27 +204,42 @@ export default function ResultEndForm() {
             </p>
 
             <form className="form-container">
-              {possibleDates.map((date, index) => (
-                <label key={index}>
-                  <input
-                    type="radio"
-                    name="date"
-                    value={date}
-                    checked={selectedDate === date}
-                    onChange={handleDateChange}
-                  />
-                  {date}
-                </label>
-              ))}
+              {possibleDates.length > 0 ? (
+                possibleDates.map((dateTime, index) => (
+                  <label key={index}>
+                    <input
+                      type="radio"
+                      name="date"
+                      value={dateTime}
+                      checked={selectedDate === dateTime}
+                      onChange={handleDateChange}
+                    />
+                    {formatDateTime(dateTime)}
+                  </label>
+                ))
+              ) : (
+                <h2>겹치는 시간대가 없습니다.</h2>
+              )}
             </form>
 
             <button
-              style={{ marginTop: "20px", padding: "10px 20px" }}
-              onClick={closeMeeting}
+              style={{
+                marginTop: "20px",
+                padding: "10px 20px",
+                width: "300px",
+              }}
+              onClick={confirmSelectedTime}
             >
               이 시간으로 정했어요
             </button>
-            <button style={{ marginTop: "10px", padding: "10px 20px" }}>
+            <button
+              style={{
+                marginTop: "10px",
+                padding: "10px 20px",
+                width: "300px",
+              }}
+              onClick={handleRandomConfirm}
+            >
               랜덤으로 약속 시간 확정하기
             </button>
           </span>

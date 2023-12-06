@@ -3,9 +3,9 @@
   width: 50%;
 }
 .form-container {
-  width: 50%;
   margin-bottom: 20px;
   padding: 0;
+  width: 100%;
 }
 
 .calendar {

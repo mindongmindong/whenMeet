@@ -38,9 +38,11 @@ function ResultMakeForm() {
       if (!meetingData || !meetingData.voteExpiresAt) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0 };
       }
-      const now = new Date();
-      const voteExpires = new Date(meetingData.voteExpiresAt);
-      const difference = voteExpires - now;
+      const nowUTC = new Date(
+        new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000
+      );
+      const voteExpiresUTC = new Date(meetingData.voteExpiresAt);
+      const difference = voteExpiresUTC - nowUTC;
 
       if (difference > 0) {
         return {
@@ -67,6 +69,7 @@ function ResultMakeForm() {
     const timerId = setInterval(updateTimer, 1000);
     return () => clearInterval(timerId);
   }, [meetingData]);
+
   const handleEdit = async () => {
     try {
       const response = await axios.get(
@@ -119,6 +122,8 @@ function ResultMakeForm() {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         alert("비밀번호가 틀렸습니다.");
+      } else if (error.response && error.response.status === 409) {
+        alert("이미 종료된 투표입니다.");
       } else {
         console.error("오류 발생:", error);
       }
@@ -138,7 +143,7 @@ function ResultMakeForm() {
               {meetingData?.maxParticipants}
             </div>
           )}
-          {!meetingData && (
+          {!meetingData.maxParticipants && (
             <div>현재 완료한 인원수 {meetingData?.currentParticipants}</div>
           )}
 
