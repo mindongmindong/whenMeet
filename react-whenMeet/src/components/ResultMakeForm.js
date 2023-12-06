@@ -18,10 +18,9 @@ function ResultMakeForm() {
     const fetchMeetingData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(
-          `http://localhost:3000/meetings/${meeting_id}/details`,
-          { withCredentials: true }
-        );
+        const response = await axios.get(`/meetings/${meeting_id}/details`, {
+          withCredentials: true,
+        });
         setMeetingData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -38,11 +37,16 @@ function ResultMakeForm() {
       if (!meetingData || !meetingData.voteExpiresAt) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0 };
       }
-      const nowUTC = new Date(
-        new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000
-      );
-      const voteExpiresUTC = new Date(meetingData.voteExpiresAt);
-      const difference = voteExpiresUTC - nowUTC;
+
+      // 서버의 voteExpiresAt 값을 한국 시간대로 가정하여 파싱
+      const voteExpiresKST = new Date(meetingData.voteExpiresAt);
+
+      // 현재 로컬 시간 (브라우저 시간대를 한국 시간대로 조정)
+      const now = new Date();
+      const nowKST = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC 시간에 9시간을 더해 KST로 조정
+
+      // 남은 시간 계산
+      const difference = voteExpiresKST - nowKST;
 
       if (difference > 0) {
         return {
@@ -72,9 +76,7 @@ function ResultMakeForm() {
 
   const handleEdit = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/meetings/${meeting_id}/`
-      );
+      const response = await axios.get(`/meetings/${meeting_id}/`);
       const {
         startDate,
         endDate,
@@ -84,7 +86,7 @@ function ResultMakeForm() {
 
       try {
         const scheduleResponse = await axios.get(
-          `http://localhost:3000/meetings/${meeting_id}/my/schedules`
+          `/meetings/${meeting_id}/my/schedules`
         );
         navigate(`/homeparticipate/${meeting_id}/usertimeinfo/`, {
           state: {
@@ -115,7 +117,7 @@ function ResultMakeForm() {
   const handlePasswordSubmit = async (password) => {
     setIsModalOpen(false);
     try {
-      await axios.patch(`http://localhost:3000/meetings/${meeting_id}/close`, {
+      await axios.patch(`/meetings/${meeting_id}/close`, {
         adminPassword: password,
       });
       navigate(`/resultend/${meeting_id}`);
