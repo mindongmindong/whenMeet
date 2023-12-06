@@ -45,11 +45,11 @@ export default function ResultEndForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [topThreeConfirmedTimes, setTopThreeConfirmedTimes] = useState([]);
   const purposeText = {
-    STUDY: "스터디",
-    MEETING: "회의",
-    PLAYING: "놀기",
-    FOOD: "식사",
-    ETC: "기타",
+    STUDY: "스터디를 진행하는 ",
+    MEETING: "회의를 진행하는 ",
+    PLAYING: "노는 약속을 잡은 ",
+    FOOD: "식사를 하는 ",
+    ETC: "기타의 모임을 잡은 ",
   };
   console.log(possibleDates);
   const fetchMeetingData = async () => {
@@ -222,7 +222,7 @@ export default function ResultEndForm() {
         {!meetingData.confirmedTime && (
           <span className="closedFalse">
             <p>
-              {meetingData.purpose && purposeText[meetingData.purpose]}를 하는
+              {meetingData.purpose && purposeText[meetingData.purpose]}
               다른 사람들은 주로{" "}
               {topThreeConfirmedTimes
                 .map((time) => `${time.hour}시`)
