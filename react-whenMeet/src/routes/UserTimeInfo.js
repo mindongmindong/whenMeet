@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Button from "../components/Button";
 import CalendarWeek2 from "../components/CalendarWeek2";
-import "../styles/HomeMake.css";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 

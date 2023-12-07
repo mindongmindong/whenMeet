@@ -1,5 +1,4 @@
 import HomeParticipateForm from "../components/HomeParticipateForm";
-import "../styles/HomeMake.css";
 
 function HomeParticipate(){
 

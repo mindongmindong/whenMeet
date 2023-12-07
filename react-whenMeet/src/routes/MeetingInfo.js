@@ -1,5 +1,5 @@
 import MeetingInfoForm from "../components/MeetingInfoForm";
-import "../styles/HomeMake.css"
+import '../styles/MeetingInfo.css'
 
 function MeetingInfo() {
     

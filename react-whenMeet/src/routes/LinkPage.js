@@ -1,5 +1,4 @@
 import LinkPageForm from "../components/LinkPageForm";
-import "../styles/HomeMake.css"
 
 function LinkPage() {
     return (

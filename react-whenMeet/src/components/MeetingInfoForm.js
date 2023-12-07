@@ -101,8 +101,9 @@ function MeetingInfoForm() {
             </select>
           </label>
         </div>
-
-        <Calendar usingDate={usingDate} setUsingDate={setUsingDate} />
+        <div>
+          <Calendar usingDate={usingDate} setUsingDate={setUsingDate} />
+        </div>
         <div className="timeStartEnd">
           투표 가능 시간
           <TimeInput onTimeChange={handleStartTimeChange} />

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
-
+import "../styles/HomeMake.css";
 function HomeMakeForm() {
     const [title, setTitle] = useState("");
     const [password, setPassword] = useState("");
@@ -18,36 +18,31 @@ function HomeMakeForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (title === "") {
-            return alert("Title을 입력하세요");
-        } else if (password === "") {
-            return alert("Password를 입력하세요");
-        } else {
-            navigate("/MeetingInfo", {state : {title, password}});
-        }
+        navigate("/MeetingInfo", {state : {title, password}});
     };
+    const isFormValid = title.trim() !== "" && password.trim() !== "";
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
-                <h1>When we meet?</h1>
+            <div className="system-name">언제모임?</div>
+            <div className="center-container">
+                <h1>원하는 약속을 만들어보세요</h1>
                 <Input
                     type="text"
                     value={title}
                     onChange={onTitleChange}
-                    placeholder="약속 Title"
+                    placeholder="약속 이름을 입력해주세요"
                 />
-                <br />
                 <Input
                     type="password"
                     value={password}
                     onChange={onPasswordChange}
-                    placeholder="관리용 Password"
+                    placeholder="관리용 비밀번호를 입력해주세요"
                 />
-                <br />
                 <Button
                     type="submit"
                     text="시작하기"
+                    disabled={!isFormValid}
                 />
             </div>
         </form>
