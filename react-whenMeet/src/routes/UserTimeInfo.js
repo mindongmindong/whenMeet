@@ -4,6 +4,8 @@ import CalendarWeek2 from "../components/CalendarWeek2";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+import "../styles/UserTimeInfo.css";
+
 function UserTimeInfo() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,7 +28,6 @@ function UserTimeInfo() {
   let st = 0;
   let et = 48;
 
-  console.log(location.state.startTime, location.state.endTime);
   if (
     !(
       location.state.startTime === location.state.endTime &&
