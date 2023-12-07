@@ -101,7 +101,7 @@ function MeetingInfoForm() {
             </select>
           </label>
         </div>
-        <div>
+        <div className="calendar-month">
           <Calendar usingDate={usingDate} setUsingDate={setUsingDate} />
         </div>
         <div className="timeStartEnd">
@@ -116,6 +116,7 @@ function MeetingInfoForm() {
           onChange={handleNumber}
           placeholder="예상 투표 인원(선택)"
         />
+        <a>예상 투표 종료 시간(선택)</a>
         <Input type="datetime-local" value={endVote} onChange={handleVoteEnd} />
         <Button type="submit" text="시작하기" />
       </div>
