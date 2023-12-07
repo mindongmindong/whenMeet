@@ -6,62 +6,34 @@ import PasswordModal from "./PasswordModal.jsx";
 import "../styles/ResultEnd.css";
 import "../styles/CalendarWeek.css";
 
-function formatDateTime(dateTime) {
-  console.log("원본 시간 데이터:", dateTime); // 원본 데이터 로그
+function formatDateTime(date, timeIndex) {
+  const year = date.substring(0, 4);
+  const month = date.substring(5, 7);
+  const day = date.substring(8, 10);
+  const hours = Math.floor(timeIndex / 2)
+    .toString()
+    .padStart(2, "0");
+  const minutes = (timeIndex % 2) * 30;
 
-  const parts = dateTime.split("-");
-  const datePart = parts.slice(0, 3).join("-");
-  const timePart = parseInt(parts[3], 10);
-  const hours = Math.floor(timePart / 2);
-  const minutes = (timePart % 2) * 30;
-
-  // UTC 시간으로 변환
-  const utcDate = new Date(
-    `${datePart}T${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:00Z`
-  );
-
-  const year = utcDate.getUTCFullYear();
-  const month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0");
-  const day = utcDate.getUTCDate().toString().padStart(2, "0");
-  const utcHours = utcDate.getUTCHours().toString().padStart(2, "0");
-  const utcMinutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
-
-  const formattedDateTime = `${year}년 ${month}월 ${day}일 ${utcHours}시 ${utcMinutes}분`;
-
-  return formattedDateTime;
+  return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes
+    .toString()
+    .padStart(2, "0")}분`;
 }
 
-function formatConfirmedTime(isoString) {
-  const utcDate = new Date(isoString);
-  const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // UTC+9 시간을 더함
+function formatKSTDateTime(utcDateTime) {
+  const date = new Date(utcDateTime);
 
-  const year = kstDate.getFullYear();
-  const month = (kstDate.getMonth() + 1).toString().padStart(2, "0");
-  const day = kstDate.getDate().toString().padStart(2, "0");
-  const hours = kstDate.getHours().toString().padStart(2, "0");
-  const minutes = kstDate.getMinutes().toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
 
-  return (
-    `${year}년 ${month}월 ${day}일 ${hours}시` +
-    (minutes !== "00" ? ` ${minutes}분` : "")
-  );
-}
-
-function convertToISOFormat(dateTimeString) {
-  const parts = dateTimeString.split("-");
-  const datePart = parts.slice(0, 3).join("-");
-  const timePart = parts[3];
-  const hours = Math.floor(parseInt(timePart, 10) / 2);
-  const minutes = (parseInt(timePart, 10) % 2) * 30;
-
-  // 지역 시간을 생성 (KST)
-  const localDate = new Date(`${datePart} ${hours}:${minutes}:00`);
-  // UTC 시간으로 변환
-  const utcDate = new Date(localDate.getTime() - 9 * 60 * 60 * 1000);
-
-  return utcDate.toISOString();
+  if (minutes === "00") {
+    return `${year}년 ${month}월 ${day}일 ${hours}시`;
+  } else {
+    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+  }
 }
 
 export default function ResultEndForm() {
@@ -71,20 +43,21 @@ export default function ResultEndForm() {
   const [hoveredInfo, setHoveredInfo] = useState(null);
   const { meeting_id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [topThreeConfirmedTimes, setTopThreeConfirmedTimes] = useState([]);
   const purposeText = {
-    STUDY: "스터디",
-    MEETING: "회의",
-    PLAYING: "놀기",
-    FOOD: "식사",
-    ETC: "기타",
+    STUDY: "스터디를 진행하는 ",
+    MEETING: "회의를 진행하는 ",
+    PLAYING: "노는 약속을 잡은 ",
+    FOOD: "식사를 하는 ",
+    ETC: "기타의 모임을 잡은 ",
   };
+  console.log(possibleDates);
   const fetchMeetingData = async () => {
     try {
       const response = await fetch(`/meetings/${meeting_id}/details`);
       const data = await response.json();
       setMeetingData(data);
 
-      // 가능한 시간 집계
       let availabilityMap = {};
       data.participants.forEach((participant) => {
         participant.availableSchedules.forEach((schedule) => {
@@ -98,12 +71,10 @@ export default function ResultEndForm() {
         });
       });
 
-      // 가장 많이 겹치는 시간 찾기
       const sortedAvailability = Object.entries(availabilityMap).sort(
         (a, b) => b[1] - a[1]
       );
 
-      // 겹치는 시간이 가장 많은 상위 항목만 뽑기
       const mostAvailableTimes = sortedAvailability
         .filter((item, index, arr) => item[1] === arr[0][1])
         .map((item) => item[0]);
@@ -117,6 +88,26 @@ export default function ResultEndForm() {
     fetchMeetingData();
   }, [meeting_id]);
 
+  useEffect(() => {
+    const fetchTop3Time = async () => {
+      try {
+        if (meetingData && meetingData.purpose) {
+          const response = await axios.get(
+            `/meetings/top-three-confirmed-times`,
+            {
+              params: { purpose: meetingData.purpose },
+              withCredentials: true,
+            }
+          );
+          setTopThreeConfirmedTimes(response.data.topThreeConfirmedTimes);
+        }
+      } catch (error) {
+        console.error("Top 3 시간대 가져오기 실패:", error);
+      }
+    };
+
+    fetchTop3Time();
+  }, [meetingData]);
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
@@ -126,6 +117,23 @@ export default function ResultEndForm() {
       alert("시간을 선택해주세요.");
       return;
     }
+
+    const lastIndex = selectedDate.lastIndexOf("-");
+    const date = selectedDate.substring(0, lastIndex);
+    const timeIndex = selectedDate.substring(lastIndex + 1);
+
+    const hours = Math.floor(parseInt(timeIndex) / 2);
+    const minutes = (parseInt(timeIndex) % 2) * 30;
+
+    const kstDate = new Date(
+      `${date}T${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:00.000+09:00`
+    );
+
+    const utcTimeISO = kstDate.toISOString();
+
+    setSelectedDate(utcTimeISO);
     setIsModalOpen(true);
   };
 
@@ -133,7 +141,22 @@ export default function ResultEndForm() {
     if (possibleDates.length > 0) {
       const randomIndex = Math.floor(Math.random() * possibleDates.length);
       const randomDateTime = possibleDates[randomIndex];
-      setSelectedDate(randomDateTime);
+
+      const lastIndex = randomDateTime.lastIndexOf("-");
+      const date = randomDateTime.substring(0, lastIndex);
+      const timeIndex = randomDateTime.substring(lastIndex + 1);
+      const hours = Math.floor(parseInt(timeIndex) / 2);
+      const minutes = (parseInt(timeIndex) % 2) * 30;
+
+      const kstDate = new Date(
+        `${date}T${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:00.000+09:00`
+      );
+
+      const utcTimeISO = kstDate.toISOString();
+
+      setSelectedDate(utcTimeISO);
       setIsModalOpen(true);
     } else {
       alert("선택 가능한 날짜와 시간이 없습니다.");
@@ -147,12 +170,11 @@ export default function ResultEndForm() {
   const handlePasswordSubmit = async (password) => {
     setIsModalOpen(false);
     try {
-      const confirmedTimeISO = convertToISOFormat(selectedDate);
       const response = await axios.patch(
-        `http://localhost:3000/meetings/${meeting_id}/confirm-time`,
+        `/meetings/${meeting_id}/confirm-time`,
         {
           adminPassword: password,
-          confirmedTime: confirmedTimeISO,
+          confirmedTime: selectedDate, // UTC로 조정된 시간
         }
       );
 
@@ -167,6 +189,7 @@ export default function ResultEndForm() {
       }
     }
   };
+
   if (!meetingData) {
     return <div>로딩 중...</div>;
   }
@@ -187,7 +210,7 @@ export default function ResultEndForm() {
         {meetingData.confirmedTime && (
           <div>
             <p style={{ color: "blue" }}>
-              약속 시간은 {formatConfirmedTime(meetingData.confirmedTime)}
+              약속 시간은 {formatKSTDateTime(meetingData.confirmedTime)}
               입니다.
             </p>
             <div>
@@ -199,24 +222,34 @@ export default function ResultEndForm() {
         {!meetingData.confirmedTime && (
           <span className="closedFalse">
             <p>
-              {meetingData.purpose && purposeText[meetingData.purpose]}를 하는
-              다른 사람들은 주로 평일 낮 시간대에 많이 만나요
+              {meetingData.purpose && purposeText[meetingData.purpose]}
+              다른 사람들은 주로{" "}
+              {topThreeConfirmedTimes
+                .map((time) => `${time.hour}시`)
+                .join(", ")}
+              에 많이 만나요
             </p>
 
             <form className="form-container">
               {possibleDates.length > 0 ? (
-                possibleDates.map((dateTime, index) => (
-                  <label key={index}>
-                    <input
-                      type="radio"
-                      name="date"
-                      value={dateTime}
-                      checked={selectedDate === dateTime}
-                      onChange={handleDateChange}
-                    />
-                    {formatDateTime(dateTime)}
-                  </label>
-                ))
+                possibleDates.map((dateTime, index) => {
+                  const lastIndex = dateTime.lastIndexOf("-");
+                  const date = dateTime.slice(0, lastIndex);
+                  const timeIndex = dateTime.slice(lastIndex + 1);
+
+                  return (
+                    <label key={index}>
+                      <input
+                        type="radio"
+                        name="date"
+                        value={dateTime}
+                        checked={selectedDate === dateTime}
+                        onChange={handleDateChange}
+                      />
+                      {formatDateTime(date, parseInt(timeIndex))}
+                    </label>
+                  );
+                })
               ) : (
                 <h2>겹치는 시간대가 없습니다.</h2>
               )}
