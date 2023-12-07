@@ -14,6 +14,10 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  border-top: 2px solid #5fbdff; /* 기본 구분선 */
+  box-shadow: 0px 1px 5px rgba(95, 189, 255, 0.5); /* 구분선에 그림자 효과 추가 */
+  padding-top: 20px;
+  margin-top: 30px;
 }
 
 .mostTime {

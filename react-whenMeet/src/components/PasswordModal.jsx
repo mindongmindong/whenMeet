@@ -20,7 +20,13 @@ function PasswordModal({ isOpen, onRequestClose, onSubmit }) {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
+      padding: "20px 20px 0 20px",
     },
+  };
+  const buttonContainerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "30px",
   };
 
   return (
@@ -30,15 +36,22 @@ function PasswordModal({ isOpen, onRequestClose, onSubmit }) {
       contentLabel="비밀번호 입력"
       style={customStyles}
     >
-      <h2>관리자 비밀번호를 입력하세요</h2>
+      <h2 style={{ justifyContent: "center" }}>관리자 비밀번호를 입력하세요</h2>
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="비밀번호"
+        style={{ margin: "15px 0 0 0" }}
       />
-      <button onClick={handleSubmit}>확인</button>
-      <button onClick={onRequestClose}>취소</button>
+      <div style={buttonContainerStyle}>
+        <button onClick={handleSubmit} style={{ margin: "0 10px" }}>
+          확인
+        </button>
+        <button onClick={onRequestClose} style={{ margin: "0 10px" }}>
+          취소
+        </button>
+      </div>
     </Modal>
   );
 }

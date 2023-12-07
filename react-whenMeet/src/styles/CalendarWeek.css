@@ -1,6 +1,7 @@
 .calendar-container {
   margin-top: 20px;
   width: 100%;
+  background-color: #5fbdff;
 }
 .button-container {
   display: flex;

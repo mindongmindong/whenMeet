@@ -238,7 +238,7 @@ export default function ResultEndForm() {
                   const timeIndex = dateTime.slice(lastIndex + 1);
 
                   return (
-                    <label key={index}>
+                    <label key={index} className="radio-label">
                       <input
                         type="radio"
                         name="date"
