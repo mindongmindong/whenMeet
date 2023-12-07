@@ -3,6 +3,9 @@
   flex-direction: column;
   padding: 20px;
   text-align: center;
+  align-items: stretch;
+  width: auto;
+  margin: 0 auto; /* 가운데 정렬을 위한 추가 */
 }
 .calendarForm .calendar {
   height: auto;
@@ -35,4 +38,15 @@
 
 .cld .calendar .header h2 button {
   width: 30%;
+}
+
+@media (max-width: 768px) {
+  form {
+    width: 80%;
+  }
+}
+@media (max-width: 576px) {
+  form {
+    width: 90%;
+  }
 }
