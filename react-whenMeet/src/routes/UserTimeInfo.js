@@ -195,11 +195,11 @@ function UserTimeInfo() {
 
   return (
     <div className="center-container">
-      <div className="cc">
-        <Button type="button" text="가능한 시간" onClick={handleState1} />
-        <Button type="button" text="불가능한 시간" onClick={handleState2} />
-      </div>
-      <div className="cld">
+      <div className="calendarForm">
+        <div className="cc1">
+          <Button type="button" text="가능한 시간" onClick={handleState1} />
+          <Button type="button" text="불가능한 시간" onClick={handleState2} />
+        </div>
         <CalendarWeek2
           state={state}
           startDate={startDate}
@@ -212,9 +212,9 @@ function UserTimeInfo() {
           setAvailableTimes={setAvailableTimes}
           isContain={isContain}
         />
-      </div>
-      <div className="cc">
-        <Button type="submit" text="시작하기" onClick={handleAlert} />
+        <div className="cc">
+          <Button type="submit" text="제출하기" onClick={handleAlert} />
+        </div>
       </div>
     </div>
   );

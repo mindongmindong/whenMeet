@@ -3,6 +3,9 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import TimeInput from "./TimeInput";
+
+import "../styles/MeetingInfo.css";
+
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 

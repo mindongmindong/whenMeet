@@ -233,7 +233,11 @@ function CalendarWeek2({
           <button onClick={nextWeek}>next</button>
         </h2>
       </div>
-      {state ? <p>가능한 시간</p> : <p>불가능한 시간</p>}
+      {state ? (
+        <p>가능한 시간을 선택합니다.</p>
+      ) : (
+        <p>불가능한 시간을 선택합니다.</p>
+      )}
       <div className="calendarTable">
         <table>
           <MakeDay2 />
