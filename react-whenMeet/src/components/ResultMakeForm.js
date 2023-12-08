@@ -13,7 +13,70 @@ function ResultMakeForm() {
   const [hoveredInfo, setHoveredInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mostAvailableDates, setMostAvailableDates] = useState([]);
+  const [topAvailableDates, setTopAvailableDates] = useState([]);
 
+  useEffect(() => {
+    if (meetingData && meetingData.participants) {
+      calculateTopAvailableDates();
+    }
+  }, [meetingData]);
+
+  const calculateTopAvailableDates = () => {
+    let dateAvailability = {};
+
+    meetingData.participants.forEach((participant) => {
+      participant.availableSchedules.forEach((schedule) => {
+        if (!dateAvailability[schedule.availableDate]) {
+          dateAvailability[schedule.availableDate] = {};
+        }
+        schedule.availableTimes.forEach((time) => {
+          if (!dateAvailability[schedule.availableDate][time]) {
+            dateAvailability[schedule.availableDate][time] = 0;
+          }
+          dateAvailability[schedule.availableDate][time]++;
+        });
+      });
+    });
+
+    let dateCounts = Object.entries(dateAvailability).map(([date, times]) => {
+      let maxCount = Math.max(...Object.values(times));
+      let count = Object.values(times).filter((val) => val === maxCount).length;
+      return { date, count, maxCount };
+    });
+
+    dateCounts.sort((a, b) => b.maxCount - a.maxCount || b.count - a.count);
+
+    setTopAvailableDates(dateCounts.slice(0, 5));
+  };
+
+  useEffect(() => {
+    if (meetingData && meetingData.participants) {
+      calculateMostAvailableDates();
+    }
+  }, [meetingData]);
+
+  const calculateMostAvailableDates = () => {
+    let dateAvailabilityCount = {};
+
+    meetingData.participants.forEach((participant) => {
+      participant.availableSchedules.forEach((schedule) => {
+        if (!dateAvailabilityCount[schedule.availableDate]) {
+          dateAvailabilityCount[schedule.availableDate] = new Set();
+        }
+        schedule.availableTimes.forEach((time) => {
+          dateAvailabilityCount[schedule.availableDate].add(time);
+        });
+      });
+    });
+
+    const sortedDates = Object.entries(dateAvailabilityCount)
+      .map(([date, times]) => ({ date, count: times.size }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+
+    setMostAvailableDates(sortedDates);
+  };
   useEffect(() => {
     const fetchMeetingData = async () => {
       setIsLoading(true);
@@ -141,15 +204,15 @@ function ResultMakeForm() {
           <h1 className="title-box">{meetingData?.title}</h1>
           {meetingData.maxParticipants && (
             <div>
-              현재 완료한 인원수 {meetingData?.currentParticipants} /{" "}
+              현재 완료한 인원수 : {meetingData?.currentParticipants} /{" "}
               {meetingData?.maxParticipants}
             </div>
           )}
           {!meetingData.maxParticipants && (
-            <div>현재 완료한 인원수 {meetingData?.currentParticipants}</div>
+            <div>현재 완료한 인원수 : {meetingData?.currentParticipants}</div>
           )}
 
-          <div>종료까지 남은 시간 {timeLeft}</div>
+          <div>종료까지 남은 시간 : {timeLeft}</div>
           <button onClick={handleEdit}>수정하기</button>
           <button onClick={closeMeeting}>투표 종료하기</button>
         </div>
@@ -174,33 +237,42 @@ function ResultMakeForm() {
         onRequestClose={handleModalClose}
         onSubmit={handlePasswordSubmit}
       />
-      <span className="mostTime">
-        <div style={{ textAlign: "center" }}>
-          가장 많은 사람들이 가능한 일정
-        </div>
-        <ol>//일정 5개 나열</ol>
-      </span>
-      <span className="possible">
-        {!hoveredInfo && (
-          <div>
-            <strong>가능한 사람들이 표시됩니다.</strong>
-            <p>마우스를 달력 위에 올려보세요!</p>
-          </div>
-        )}
+      <div className="flex-bottom-container">
+        <span className="mostTime">
+          <strong style={{ textAlign: "center" }}>
+            가장 많은 사람들이 가능한 일정
+          </strong>
+          <ol>
+            {topAvailableDates.map((dateInfo, index) => (
+              <li key={index}>
+                {dateInfo.date} ({dateInfo.maxCount}명이 가능한 시간대:{" "}
+                {dateInfo.count}개 )
+              </li>
+            ))}
+          </ol>
+        </span>
+        <span className="possible">
+          {!hoveredInfo && (
+            <div>
+              <strong>가능한 사람들이 표시됩니다.</strong>
+              <p>마우스를 달력 위에 올려보세요!</p>
+            </div>
+          )}
 
-        {hoveredInfo && (
-          <div style={{ textAlign: "center" }}>
-            <strong>
-              {hoveredInfo.date} {hoveredInfo.time}에 가능한 사람:
-            </strong>
-            <ul>
-              {hoveredInfo.participants.map((name) => (
-                <li key={name}>{name}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </span>
+          {hoveredInfo && (
+            <div style={{ textAlign: "center" }}>
+              <strong>
+                {hoveredInfo.date} {hoveredInfo.time}에 가능한 사람:
+              </strong>
+              <ul>
+                {hoveredInfo.participants.map((name) => (
+                  <li key={name}>{name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </span>
+      </div>
     </>
   );
 }
