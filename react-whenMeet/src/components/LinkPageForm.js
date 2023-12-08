@@ -23,7 +23,6 @@ function LinkPageForm() {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        console.log({id});
         navigate(`/HomeParticipate/${id}`);
     }
 
@@ -32,7 +31,7 @@ function LinkPageForm() {
             <div>
                 <p>hey</p>
                 <Input
-                    value={`localhost:3000/HomeParticipate/${id}`}
+                    value={`https://when-meet.link/HomeParticipate/${id}`}
                 />
                 <Button
                     type="button"
