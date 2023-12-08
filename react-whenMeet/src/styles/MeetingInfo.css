@@ -7,7 +7,6 @@ body {
 .calendar-month .calendar {
   border: 0px;
   padding: 0px;
-  min-height: 26em;
 }
 
 .center-container {
@@ -67,7 +66,7 @@ select {
   outline: none;
   cursor: pointer;
 }
-.calendarh2 {
+.calendar h2 {
   display: flex;
   white-space: nowrap;
   margin: 0;
@@ -195,6 +194,27 @@ button:hover {
   border-style: solid;
   margin: 10px;
   padding: 2px 10px;
+}
+
+.calendarTable table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 4%;
+}
+
+.calendarTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.calendarTable th {
+  background-color: #f4f4f4;
+}
+
+.calendarTable td {
+  background-color: #f4f4f4;
+  cursor: pointer;
 }
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
