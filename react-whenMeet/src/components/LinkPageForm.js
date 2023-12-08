@@ -28,8 +28,9 @@ function LinkPageForm() {
 
     return (
         <form onSubmit={handleSubmit}>
+            <h1>투표 링크가 생성되었습니다</h1>
+            <hr/>
             <div>
-                <p>hey</p>
                 <Input
                     value={`https://when-meet.link/HomeParticipate/${id}`}
                 />

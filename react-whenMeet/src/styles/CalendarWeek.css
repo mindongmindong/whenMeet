@@ -1,51 +1,66 @@
-.calendar-container {
+.calendarWeekContainer .calendar-container {
   margin-top: 20px;
   width: 100%;
   background-color: #5fbdff;
 }
-.button-container {
+
+.calendarWeekContainer .button-container {
   display: flex;
   justify-content: space-between;
 }
-.button-container button:first-child {
-  margin-right: 20px;
+
+.calendarWeekContainer .button-container button:first-child {
+  margin-right: 10%;
+  margin-left: 10%;
 }
-.button-container button:last-child {
-  margin-left: 20px;
+
+.calendarWeekContainer .button-container button:last-child {
+  margin-right: 10%;
+  margin-left: 10%;
 }
-.wrap {
+
+.calendarWeekContainer .wrap {
   width: 80%;
 }
-table {
+
+.calendarWeekContainer table {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
   margin-bottom: 4%;
 }
 
-th,
-td {
+.calendarWeekContainer th,
+.calendarWeekContainer td {
   border: 1px solid #ddd;
   padding: 10px;
 }
 
-th {
+.calendarWeekContainer th {
   background-color: #f4f4f4;
 }
 
-td {
+.calendarWeekContainer td {
   background-color: #f4f4f4;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease,
-    box-shadow 0.3s ease; /* 부드러운 애니메이션 효과 */
-}
-td:hover {
-  background-color: aqua;
-  transform: scale(1.05); /* 셀을 약간 확대 */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 셀에 그림자 추가 */
-  border: 1px solid #5fbdff; /* 셀 주위에 테두리 추가 */
+    box-shadow 0.3s ease;
 }
 
-.selected {
-  background-color: #e0ffe0; /* 선택된 셀의 배경색 */
+.calendarWeekContainer td:hover {
+  background-color: aqua;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid #5fbdff;
+}
+
+.calendarWeekContainer .selected {
+  background-color: #e0ffe0;
+}
+
+@media screen and (max-width: 768px) {
+  .calendarWeekContainer .wrap {
+    display: flex;
+    width: 100%;
+  }
 }

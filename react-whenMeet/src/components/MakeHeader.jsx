@@ -6,7 +6,7 @@ export default function MakeHeader({
 }) {
   return (
     <div className="header">
-      <h2>
+      <h2 className="calendarh2">
         <button type="button" onClick={prevMonth}>
           prev
         </button>

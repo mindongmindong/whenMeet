@@ -9,11 +9,11 @@
 }
 .form-container label {
   display: flex;
-  align-items: center; /* 라디오 버튼과 텍스트를 세로 중앙에 맞춤 */
-  margin: 20px 0; /* 라벨 간에 여백을 추가 */
+  align-items: center;
+  margin: 20px 0;
 }
 .form-container input[type="radio"] {
-  margin-right: 10px; /* 라디오 버튼과 텍스트 사이의 공간 조정 */
+  margin-right: 10px;
   width: 20%;
 }
 
@@ -24,11 +24,9 @@
 
 .possible {
   position: fixed;
-  right: 0; /* 화면의 오른쪽 끝에 고정 */
-  top: 60%; /* 화면의 상단으로부터 50%의 위치에 고정 */
-  transform: translateY(
-    -50%
-  ); /* 상단 50% 위치에서 자기 자신의 높이의 절반을 위로 이동 */
+  right: 0;
+  top: 60%;
+  transform: translateY(-50%);
   width: 20%;
   border: 1px solid black;
   padding: 20px;
@@ -44,4 +42,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+@media screen and (max-width: 768px) {
+  .possible {
+    position: static;
+    width: 40%;
+    margin: 200px 20px;
+  }
+
+  .flex-row {
+    flex-direction: column;
+    width: 100%;
+  }
 }

@@ -29,17 +29,56 @@ h1 {
   margin-bottom: 10px;
   color: #333333;
   font-size: 24px;
-  font-family: "Lato";
 }
 
 h2 {
+  font-size: 16px;
+  padding: 5px;
+}
+
+.not-enter {
+  white-space: nowrap;
+}
+
+select {
+  width: 20%;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+.purpose-selector {
+  width: 50%;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.time-selector {
+  width: 100%;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+.calendarh2 {
+  display: flex;
+  white-space: nowrap;
+  margin: 0;
+}
+.num-of-people {
   display: flex;
   align-items: center;
   justify-content: space-between;
   white-space: nowrap;
   margin: 0;
 }
-
 .timeStartEnd {
   display: flex;
   align-items: center;
@@ -47,11 +86,30 @@ h2 {
   white-space: nowrap;
   margin: 0;
 }
-
+.end-time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  margin: 0;
+}
 input {
   width: 100%;
   padding: 10px;
   margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.voteNumber {
+  width: 60%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.vote-end {
+  width: 60%;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -87,15 +145,17 @@ button:hover {
   margin: auto;
 }
 .header button:first-child {
-  margin-right: 20px;
+  margin-right: 6em;
 }
 .header button:last-child {
-  margin-left: 20px;
+  margin-left: 6em;
 }
 
-.purpose-selector {
-  margin: 20px;
+.purpose {
+  display: flex;
+  align-items: center;
 }
+
 .calendarTable {
   display: flex;
   justify-content: center;

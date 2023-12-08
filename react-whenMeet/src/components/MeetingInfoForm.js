@@ -90,38 +90,49 @@ function MeetingInfoForm() {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <div className="purpose-selector">
-          <h1>약속 일정 만들기</h1>
-          <label>
-            목적:
-            <select value={meetingPurpose} onChange={handleOnChange}>
-              <option value="선택">선택</option>
-              <option value="스터디">스터디</option>
-              <option value="회의">회의</option>
-              <option value="놀기">놀기</option>
-              <option value="식사">식사</option>
-              <option value="기타">기타</option>
-            </select>
-          </label>
+      <div className="center-container">
+        <h1>약속 일정 만들기</h1>
+        <div className="purpose">
+          <h2 className="not-enter">약속 목적 </h2>
+          <select className="purpose-selector" value={meetingPurpose} onChange={handleOnChange}>
+            <option value="선택">선택</option>
+            <option value="스터디">스터디</option>
+            <option value="회의">회의</option>
+            <option value="놀기">놀기</option>
+            <option value="식사">식사</option>
+            <option value="기타">기타</option>
+          </select>
         </div>
         <div className="calendar-month">
           <Calendar usingDate={usingDate} setUsingDate={setUsingDate} />
         </div>
-        <div className="timeStartEnd">
-          투표 가능 시간
-          <TimeInput onTimeChange={handleStartTimeChange} />
-          ~
-          <TimeInput onTimeChange={handleEndTimeChange} />
+        <div className="form-input">
+          <h2>추가 설정</h2>
+          <div className="num-of-people">
+            <h2>투표 인원수</h2>
+            <Input
+              classname="voteNumber"
+              type="number"
+              value={number}
+              onChange={handleNumber}
+              placeholder="인원수"
+            />
+          </div>
+          <div className="timeStartEnd">
+            <h2>투표 가능 시간</h2>
+            <TimeInput onTimeChange={handleStartTimeChange} />
+            ~
+            <TimeInput onTimeChange={handleEndTimeChange} />
+          </div>
+          <div className="end-time">
+            <h2 className="not-enter">투표 종료 시간</h2>
+            <Input
+              classname= "vote-end"
+              type="datetime-local"
+              value={endVote}
+              onChange={handleVoteEnd} />
+          </div>
         </div>
-        <Input
-          type="number"
-          value={number}
-          onChange={handleNumber}
-          placeholder="예상 투표 인원(선택)"
-        />
-        <a>예상 투표 종료 시간(선택)</a>
-        <Input type="datetime-local" value={endVote} onChange={handleVoteEnd} />
         <Button type="submit" text="시작하기" />
       </div>
     </form>
