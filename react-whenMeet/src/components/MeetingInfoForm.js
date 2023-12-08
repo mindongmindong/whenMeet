@@ -31,6 +31,7 @@ function MeetingInfoForm() {
       setNumber(inputValue);
     } else {
       alert("양수만을 입력하세요");
+      setNumber("");
     }
   };
 

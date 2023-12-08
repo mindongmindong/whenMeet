@@ -11,14 +11,15 @@ function LinkPageForm() {
     const {id} = location.state;
 
 
-    const copyToClipboard = async (link) => {
-        try {
-            const textToCopy = `localhost:3000/HomeParticipate/${id}`;
-            await navigator.clipboard.writeText(textToCopy);
-            alert('클립보드에 복사되었습니다');
-        } catch (err) {
-            alert('클립보드 복사에 실패하였습니다');
-        }
+    const copyToClipboard = () => {
+        const textToCopy = `localhost:3000/HomeParticipate/${id}`;
+        const tempInput = document.createElement('input');
+        document.body.appendChild(tempInput);
+        tempInput.value = textToCopy;
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        alert('클립보드에 복사되었습니다');
     };
 
     const handleSubmit = async(event) => {
@@ -30,6 +31,7 @@ function LinkPageForm() {
     return (
         <form onSubmit={handleSubmit}>
             <div>
+                <p>hey</p>
                 <Input
                     value={`localhost:3000/HomeParticipate/${id}`}
                 />
