@@ -115,7 +115,7 @@ const CalendarWeek = ({
   const weekDates = weeks[currentWeekIndex] || [];
 
   return (
-    <div className="wrap">
+    <div className="calendarWeekContainer wrap">
       <div className="button-container">
         <button onClick={handlePrevWeek} disabled={currentWeekIndex === 0}>
           Prev Week
