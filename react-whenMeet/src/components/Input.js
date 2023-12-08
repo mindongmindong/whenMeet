@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 
-function Input({ type, value, onChange, placeholder }) {
+function Input({ type, value, onChange, placeholder, classname }) {
     return (
         <input
+            className={classname}
             type={type}
             placeholder={placeholder}
             onChange={onChange}

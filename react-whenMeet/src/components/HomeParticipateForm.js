@@ -3,6 +3,7 @@ import Input from "./Input";
 import Button from "./Button";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import "../styles/HomeParticipateForm.css"
 
 function HomeParticipateForm() {
   const [name, setName] = useState("");
@@ -186,6 +187,7 @@ function HomeParticipateForm() {
     <form>
       <div>
         <h1>투표에 참여하기</h1>
+        <h2> 아이디가 없다면 아래 양식에 맞춰 작성 후 참여하기를 누르세요</h2>
         <Input
           type="text"
           value={name}
@@ -204,7 +206,7 @@ function HomeParticipateForm() {
           onChange={handleEmail}
           placeholder="이메일(선택)"
         />
-        <Button type="submit" text="참여" onClick={handleSubmit} />
+        <Button type="submit" text="참여하기" onClick={handleSubmit} />
       </div>
     </form>
   );

@@ -11,7 +11,7 @@ function TimeInput({ onTimeChange }) {
     return (
         <div>
             <label>
-                <select value={time} onChange={handleTimeChange}>
+                <select className="time-selector" value={time} onChange={handleTimeChange}>
                     {Array.from({ length: 48 }, (_, i) => {
                         const paddedHour = Math.floor(i / 2).toString().padStart(2, "0");
                         const paddedMinute = (i % 2 === 0 ? "00" : "30");
