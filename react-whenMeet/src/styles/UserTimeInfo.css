@@ -9,6 +9,18 @@
 }
 .calendarForm .calendar {
   height: auto;
+  border: 0px;
+  padding: 0px;
+}
+
+.calendarForm button.nowtrue {
+  background-color: gray;
+}
+
+.calendarTable td.dragging {
+  text-align: center; /* 텍스트를 가운데 정렬 */
+  vertical-align: middle; /* 텍스트를 수직 가운데 정렬 */
+  background-color: skyblue; /* 배경색 지정 */
 }
 
 .cc1 {
@@ -40,13 +52,14 @@
   width: 30%;
 }
 
-@media (max-width: 768px) {
-  form {
+/* @media (max-width: 768px) {
+  .calendarForm {
     width: 80%;
   }
 }
+
 @media (max-width: 576px) {
-  form {
+  .calendarForm {
     width: 90%;
   }
-}
+} */

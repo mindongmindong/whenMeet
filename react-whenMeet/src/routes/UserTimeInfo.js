@@ -197,8 +197,20 @@ function UserTimeInfo() {
     <div className="center-container">
       <div className="calendarForm">
         <div className="cc1">
-          <Button type="button" text="가능한 시간" onClick={handleState1} />
-          <Button type="button" text="불가능한 시간" onClick={handleState2} />
+          <button
+            type="button"
+            className={"now" + !state}
+            onClick={handleState1}
+          >
+            가능한 시간
+          </button>
+          <button
+            type="button"
+            className={"now" + state}
+            onClick={handleState2}
+          >
+            불가능한 시간
+          </button>
         </div>
         <CalendarWeek2
           state={state}

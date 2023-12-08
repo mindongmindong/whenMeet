@@ -4,6 +4,12 @@ body {
   padding: 0;
 }
 
+.calendar-month .calendar {
+  border: 0px;
+  padding: 0px;
+  min-height: 26em;
+}
+
 .center-container {
   display: flex;
   flex-direction: column; /* 세로 방향으로 정렬 */
@@ -52,7 +58,7 @@ input {
 }
 
 button {
-  width: 60%;
+  width: 100%;
   padding: 10px;
   margin-top: 16px;
   background-color: #3498db;
@@ -109,11 +115,17 @@ button:hover {
 }
 
 .calendarTable .dragging {
-  background-color: red;
+  background-color: skyblue;
 }
 
 .calendarTable .noDate {
   background-color: gray;
+}
+
+.calendarTable td.dragging {
+  text-align: center; /* 텍스트를 가운데 정렬 */
+  vertical-align: middle; /* 텍스트를 수직 가운데 정렬 */
+  background-color: skyblue; /* 배경색 지정 */
 }
 
 .title-box {
