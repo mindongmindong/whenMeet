@@ -14,8 +14,8 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  border-top: 2px solid #5fbdff; /* 기본 구분선 */
-  box-shadow: 0px 1px 5px rgba(95, 189, 255, 0.5); /* 구분선에 그림자 효과 추가 */
+  border-top: 2px solid #5fbdff;
+  box-shadow: 0px 1px 5px rgba(95, 189, 255, 0.5);
   padding-top: 20px;
   margin-top: 30px;
   width: 50%;
@@ -26,11 +26,11 @@
 .possible {
   border: 1px solid #ddd;
   padding: 20px;
-  margin: 10px; /* 각 요소 주변의 공간을 더욱 명확히 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 세련된 그림자 효과 */
-  border-radius: 8px; /* 모서리를 둥글게 */
-  background-color: #ffffff; /* 배경색 설정 */
-  box-sizing: border-box; /* 패딩과 보더를 너비에 포함 */
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-sizing: border-box;
 }
 
 .mostTime {
@@ -59,15 +59,21 @@
     position: relative;
     top: 200px;
   }
-  .flex-bottom-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
 
-    bottom: 0;
-    left: 0;
+  .mostTime,
+  .possible {
+    position: relative;
+    width: 100%;
+    margin: 20px 0;
+    height: auto;
   }
 
+  .flex-bottom-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
   .possible {
     position: static;
     width: 40%;
