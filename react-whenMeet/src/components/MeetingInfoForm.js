@@ -13,8 +13,10 @@ function MeetingInfoForm() {
   const [meetingPurpose, setMeetingPurpose] = useState("");
   const [number, setNumber] = useState();
   const [endVote, setEndVote] = useState("");
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [startNum,setStartNum] = useState();
+  const [endNum,setEndNum] = useState();
   const navigate = useNavigate();
   const location = useLocation();
   const { title, password } = location.state;
@@ -27,10 +29,9 @@ function MeetingInfoForm() {
 
   const handleNumber = (event) => {
     const inputValue = event.target.value;
-    if (inputValue >= 0) {
+    if (inputValue > 0) {
       setNumber(inputValue);
     } else {
-      alert("양수만을 입력하세요");
       setNumber("");
     }
   };
@@ -38,11 +39,14 @@ function MeetingInfoForm() {
   const handleVoteEnd = (event) => {
     setEndVote(event.target.value);
   };
+
   const handleStartTimeChange = (selectedHour, selectedMinute) => {
+    setStartNum(selectedHour*2 + selectedMinute/30)
     setStartTime(`${selectedHour}:${selectedMinute}:00`);
   };
 
   const handleEndTimeChange = (selectedHour, selectedMinute) => {
+    setEndNum(selectedHour*2 + selectedMinute/30)
     setEndTime(`${selectedHour}:${selectedMinute}:00`);
   };
 
@@ -50,7 +54,6 @@ function MeetingInfoForm() {
     event.preventDefault();
 
     if (meetingPurpose === "" || meetingPurpose === "선택") {
-      alert("목적을 선택하세요");
     } else {
       let transformedPurpose = meetingPurpose; // 기본값은 그대로 유지
 
@@ -88,6 +91,9 @@ function MeetingInfoForm() {
       console.log(meetingPurpose);
     }
   };
+
+  const isFormValid = meetingPurpose.trim() !== "" && startNum <= endNum;
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="center-container2">
@@ -142,7 +148,7 @@ function MeetingInfoForm() {
             />
           </div>
         </div>
-        <Button type="submit" text="시작하기" />
+        <Button type="submit" text="시작하기" disabled={!isFormValid}/>
       </div>
     </form>
   );
