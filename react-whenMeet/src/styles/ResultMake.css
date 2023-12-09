@@ -55,6 +55,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  .mostTime {
+    position: relative;
+    top: 200px;
+  }
   .flex-bottom-container {
     display: flex;
     justify-content: space-between;
@@ -64,11 +68,11 @@
     left: 0;
   }
 
-  .mostTime,
   .possible {
     position: static;
     width: 40%;
     margin: 200px 20px;
+    height: 40%;
   }
   .flex-row {
     flex-direction: column;

@@ -21,7 +21,7 @@ const CalendarWeek = ({
   const parseTime = (time) => {
     // 자정("00:00:00")을 확인하여 48을 반환
     if (time === "00:00:00") {
-      return 48;
+      return 0;
     }
 
     const [hours, minutes] = time.split(":").map(Number);
