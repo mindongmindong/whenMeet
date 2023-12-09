@@ -19,7 +19,6 @@ const CalendarWeek = ({
   const [schedule, setSchedule] = useState({});
 
   const parseTime = (time) => {
-    // 자정("00:00:00")을 확인하여 48을 반환
     if (time === "00:00:00") {
       return 0;
     }
@@ -28,8 +27,12 @@ const CalendarWeek = ({
     return hours * 2 + (minutes >= 30 ? 1 : 0); // 30분 단위로 계산
   };
 
-  const startTimeSlot = parseTime(availableVotingStartTime);
-  const endTimeSlot = parseTime(availableVotingEndTime);
+  let startTimeSlot = parseTime(availableVotingStartTime);
+  let endTimeSlot = parseTime(availableVotingEndTime);
+
+  if (availableVotingEndTime === "00:00:00") {
+    endTimeSlot = 47;
+  }
 
   const handlePrevWeek = () => {
     setCurrentWeekIndex(Math.max(0, currentWeekIndex - 1));
