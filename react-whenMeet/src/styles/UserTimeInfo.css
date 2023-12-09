@@ -68,6 +68,11 @@ h2.UTH2 {
   vertical-align: middle; /* 텍스트를 수직 가운데 정렬 */
   background-color: skyblue; /* 배경색 지정 */
 }
+.calendarTable td.notAvailable {
+  text-align: center; /* 텍스트를 가운데 정렬 */
+  vertical-align: middle; /* 텍스트를 수직 가운데 정렬 */
+  background-color: pink; /* 배경색 지정 */
+}
 
 .header button:first-child {
   margin-right: 10%;
