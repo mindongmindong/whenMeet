@@ -103,7 +103,11 @@ function HomeParticipateForm() {
             }
           }
         } catch (error) {
-          console.error(error);
+          if(error.response){
+            if(error.response.status === 409){
+              alert("인원 초과입니다")
+            }
+          }
         }
       } else {
         // 이미 DB에 참여자가 존재하는 경우
