@@ -94,7 +94,11 @@ function MeetingInfoForm() {
         <h1>약속 일정 만들기</h1>
         <div className="purpose">
           <h2 className="not-enter">약속 목적 </h2>
-          <select className="purpose-selector" value={meetingPurpose} onChange={handleOnChange}>
+          <select
+            className="purpose-selector"
+            value={meetingPurpose}
+            onChange={handleOnChange}
+          >
             <option value="선택">선택</option>
             <option value="스터디">스터디</option>
             <option value="회의">회의</option>
@@ -106,10 +110,18 @@ function MeetingInfoForm() {
         <div className="calendar-month">
           <Calendar usingDate={usingDate} setUsingDate={setUsingDate} />
         </div>
+        <div className="timeStartEnd">
+          <h2>투표 가능 시간</h2>
+          <TimeInput onTimeChange={handleStartTimeChange} />
+          ~
+          <TimeInput onTimeChange={handleEndTimeChange} />
+        </div>
         <div className="form-input">
           <h2>추가 설정</h2>
           <div className="num-of-people">
-            <h2>투표 인원수</h2>
+            <h2>
+              투표 인원수<span className="selection">(선택)</span>
+            </h2>
             <Input
               classname="voteNumber"
               type="number"
@@ -118,19 +130,16 @@ function MeetingInfoForm() {
               placeholder="인원수"
             />
           </div>
-          <div className="timeStartEnd">
-            <h2>투표 가능 시간</h2>
-            <TimeInput onTimeChange={handleStartTimeChange} />
-            ~
-            <TimeInput onTimeChange={handleEndTimeChange} />
-          </div>
           <div className="end-time">
-            <h2 className="not-enter">투표 종료 시간</h2>
+            <h2 className="not-enter">
+              투표 종료 시간<span className="selection">(선택)</span>
+            </h2>
             <Input
-              classname= "vote-end"
+              classname="vote-end"
               type="datetime-local"
               value={endVote}
-              onChange={handleVoteEnd} />
+              onChange={handleVoteEnd}
+            />
           </div>
         </div>
         <Button type="submit" text="시작하기" />
