@@ -4,7 +4,7 @@
   padding: 20px;
   text-align: center;
   align-items: stretch;
-  width: auto;
+  width: 40%;
   margin: 0 auto; /* 가운데 정렬을 위한 추가 */
 }
 .calendarForm .calendar {

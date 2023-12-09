@@ -194,7 +194,7 @@ function UserTimeInfo() {
   };
 
   return (
-    <div className="center-container">
+    <div className="center-container2">
       <div className="calendarForm">
         <div className="cc1">
           <button

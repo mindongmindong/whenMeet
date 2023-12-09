@@ -18,14 +18,14 @@ function HomeMakeForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        navigate("/MeetingInfo", {state : {title, password}});
+        navigate("/MeetingInfo", { state: { title, password } });
     };
     const isFormValid = title.trim() !== "" && password.trim() !== "";
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="system-name">언제모임?</div>
             <div className="center-container">
+                <div className="system-name">언제모임?</div>
                 <h1>원하는 약속을 만들어보세요</h1>
                 <Input
                     type="text"
