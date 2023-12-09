@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import "../styles/ModalStyle.css";
 
 Modal.setAppElement("#root");
 
@@ -10,31 +11,14 @@ function PasswordModal({ isOpen, onRequestClose, onSubmit }) {
     onSubmit(password);
     setPassword("");
   };
-  const customStyles = {
-    content: {
-      width: "400px", // 모달의 너비
-      height: "200px", // 모달의 높이
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      padding: "20px 20px 0 20px",
-    },
-  };
-  const buttonContainerStyle = {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "30px",
-  };
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="비밀번호 입력"
-      style={customStyles}
+      overlayClassName={"modal-overlay"} // 오버레이 클래스 추가
+      className={"modal-content"} // 컨텐츠(모달 창) 클래스
     >
       <h2 style={{ justifyContent: "center" }}>관리자 비밀번호를 입력하세요</h2>
       <input
@@ -44,11 +28,11 @@ function PasswordModal({ isOpen, onRequestClose, onSubmit }) {
         placeholder="비밀번호"
         style={{ margin: "15px 0 0 0" }}
       />
-      <div style={buttonContainerStyle}>
-        <button onClick={handleSubmit} style={{ margin: "0 10px" }}>
+      <div>
+        <button onClick={handleSubmit} className="button-modal">
           확인
         </button>
-        <button onClick={onRequestClose} style={{ margin: "0 10px" }}>
+        <button onClick={onRequestClose} className="button-modal">
           취소
         </button>
       </div>

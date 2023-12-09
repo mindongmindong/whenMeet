@@ -15,6 +15,7 @@ function CaculateWeek({
   endDate,
   startTime,
   endTime,
+  state,
 }) {
   const startDay = new Date(nowYear, nowMonth - 1, 1);
   const lastDay = new Date(nowYear, nowMonth, 0);
@@ -39,13 +40,20 @@ function CaculateWeek({
     if (!isDragging) return;
 
     const elm2 = document.getElementById(comp);
-    if (isContain(newDate - 0 + idx) || elm2.classList.contains("dragging")) {
+    if (
+      isContain(newDate - 0 + idx) ||
+      elm2.classList.contains("dragging") ||
+      elm2.classList.contains("notAvailable")
+    ) {
       const elm = document.getElementById(newDate - 0 + idx);
-      elm.classList.remove("dragging");
+      if (elm.classList.contains("dragging")) elm.classList.remove("dragging");
+      else if (elm.classList.contains("notAvailable"))
+        elm.classList.remove("notAvailable");
       doCheck = doCheck.filter((key) => key !== newDate - 0 + idx);
     } else {
       const elm = document.getElementById(newDate - 0 + idx);
-      elm.classList.add("dragging");
+      if (state) elm.classList.add("dragging");
+      else elm.classList.add("notAvailable");
       doCheck.push(newDate - 0 + idx);
     }
   };
@@ -58,13 +66,20 @@ function CaculateWeek({
 
   const handleClick = (newDate, idx, comp) => {
     const elm2 = document.getElementById(comp);
-    if (isContain(newDate - 0 + idx) || elm2.classList.contains("dragging")) {
+    if (
+      isContain(newDate - 0 + idx) ||
+      elm2.classList.contains("dragging") ||
+      elm2.classList.contains("notAvailable")
+    ) {
       const elm = document.getElementById(newDate - 0 + idx);
-      elm.classList.remove("dragging");
+      if (elm.classList.contains("dragging")) elm.classList.remove("dragging");
+      else if (elm.classList.contains("notAvailable"))
+        elm.classList.remove("notAvailable");
       doCheck = doCheck.filter((key) => key !== newDate - 0 + idx);
     } else {
       const elm = document.getElementById(newDate - 0 + idx);
-      elm.classList.add("dragging");
+      if (state) elm.classList.add("dragging");
+      else elm.classList.add("notAvailable");
       doCheck.push(newDate - 0 + idx);
     }
 
@@ -105,18 +120,33 @@ function CaculateWeek({
         );
       } else {
         if (isContain(newDate - 0 + i)) {
-          forSelect.push(
-            <TableCell
-              k={newDate - 0 + i}
-              cn={"dragging"}
-              newDate={newDate}
-              handleClick={handleClick}
-              hds={handleDragStart}
-              hdw={handleDragWhile}
-              hde={handleDragEnd}
-              i={i}
-            />
-          );
+          if (state) {
+            forSelect.push(
+              <TableCell
+                k={newDate - 0 + i}
+                cn={"dragging"}
+                newDate={newDate}
+                handleClick={handleClick}
+                hds={handleDragStart}
+                hdw={handleDragWhile}
+                hde={handleDragEnd}
+                i={i}
+              />
+            );
+          } else {
+            forSelect.push(
+              <TableCell
+                k={newDate - 0 + i}
+                cn={"notAvailable"}
+                newDate={newDate}
+                handleClick={handleClick}
+                hds={handleDragStart}
+                hdw={handleDragWhile}
+                hde={handleDragEnd}
+                i={i}
+              />
+            );
+          }
         } else {
           forSelect.push(
             <TableCell
@@ -242,6 +272,7 @@ function CalendarWeek2({
         <table>
           <MakeDay2 />
           <CaculateWeek
+            state={state}
             week={nowWeek}
             nowYear={nowYear}
             nowMonth={nowMonth}

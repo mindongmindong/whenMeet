@@ -44,21 +44,20 @@
   align-items: center;
 }
 @media screen and (max-width: 768px) {
-  .flex-bottom-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-
-    bottom: 0;
-    left: 0;
-  }
-
   .mostTime,
   .possible {
     position: relative;
-    width: 40%;
-    margin: 200px 20px;
-    height: 40%;
+    width: 100%;
+    margin: 20px 0;
+    height: auto;
+    top: 200px;
+  }
+
+  .flex-bottom-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
   .flex-row {
     flex-direction: column;

@@ -101,14 +101,11 @@ function ResultMakeForm() {
         return { days: 0, hours: 0, minutes: 0, seconds: 0 };
       }
 
-      // 서버의 voteExpiresAt 값을 한국 시간대로 가정하여 파싱
       const voteExpiresKST = new Date(meetingData.voteExpiresAt);
 
-      // 현재 로컬 시간 (브라우저 시간대를 한국 시간대로 조정)
       const now = new Date();
       const nowKST = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC 시간에 9시간을 더해 KST로 조정
 
-      // 남은 시간 계산
       const difference = voteExpiresKST - nowKST;
 
       if (difference > 0) {
@@ -212,7 +209,9 @@ function ResultMakeForm() {
             <div>현재 완료한 인원수 : {meetingData?.currentParticipants}</div>
           )}
 
-          <div>종료까지 남은 시간 : {timeLeft}</div>
+          {meetingData.voteExpiresAt && (
+            <div>종료까지 남은 시간 : {timeLeft}</div>
+          )}
           <button onClick={handleEdit}>수정하기</button>
           <button onClick={closeMeeting}>투표 종료하기</button>
         </div>
