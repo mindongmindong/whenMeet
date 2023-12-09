@@ -4,7 +4,7 @@ import '../styles/MeetingInfo.css'
 function MeetingInfo() {
     
     return (
-        <div className="center-container">
+        <div>
             <MeetingInfoForm />
         </div>
     );

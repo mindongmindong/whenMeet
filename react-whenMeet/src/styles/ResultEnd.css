@@ -44,12 +44,22 @@
   align-items: center;
 }
 @media screen and (max-width: 768px) {
-  .possible {
-    position: static;
-    width: 40%;
-    margin: 200px 20px;
+  .flex-bottom-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    bottom: 0;
+    left: 0;
   }
 
+  .mostTime,
+  .possible {
+    position: relative;
+    width: 40%;
+    margin: 200px 20px;
+    height: 40%;
+  }
   .flex-row {
     flex-direction: column;
     width: 100%;

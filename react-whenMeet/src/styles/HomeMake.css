@@ -27,9 +27,10 @@ h1 {
 
 .center-container {
   display: flex;
-  flex-direction: column; /* 세로 방향으로 정렬 */
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  justify-content: center; /* Add this line to center vertically */
+  min-height: 100vh;
 }
 
 input {

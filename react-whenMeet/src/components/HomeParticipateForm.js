@@ -187,7 +187,7 @@ function HomeParticipateForm() {
     <form>
       <div>
         <h1>투표에 참여하기</h1>
-        <h2> 아이디가 없다면 아래 양식에 맞춰 작성 후 참여하기를 누르세요</h2>
+        <h2 className="h2"> 아이디가 없다면 아래 양식에 맞춰 작성 후 참여하기를 누르세요</h2>
         <Input
           type="text"
           value={name}

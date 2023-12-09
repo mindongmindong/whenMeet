@@ -90,7 +90,7 @@ function MeetingInfoForm() {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <div className="center-container">
+      <div className="center-container2">
         <h1>약속 일정 만들기</h1>
         <div className="purpose">
           <h2 className="not-enter">약속 목적 </h2>
