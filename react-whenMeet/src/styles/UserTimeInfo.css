@@ -1,11 +1,57 @@
+.center-container3 {
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  align-items: center;
+  height: 100vh;
+  margin: auto;
+}
+
+.what {
+  width: 30%;
+  padding: 20px;
+  /* background-color: #00adb5;s */
+  text-align: center;
+  margin: auto;
+}
+
+.tt {
+  font-size: 10px;
+}
+
+h2.UTH2 {
+  font-size: 16px;
+}
+
+.calendarTable table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 4%;
+}
+
+.calendarTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.calendarTable table tbody td.tt {
+  text-align: center;
+}
+
+.calendarTable th {
+  background-color: #f4f4f4;
+}
+
+.calendarTable td {
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
 .calendarForm {
   display: flex;
   flex-direction: column;
   padding: 20px;
   text-align: center;
-  align-items: stretch;
-  width: auto;
-  margin: 0 auto; /* 가운데 정렬을 위한 추가 */
 }
 .calendarForm .calendar {
   height: auto;
@@ -21,6 +67,13 @@
   text-align: center; /* 텍스트를 가운데 정렬 */
   vertical-align: middle; /* 텍스트를 수직 가운데 정렬 */
   background-color: skyblue; /* 배경색 지정 */
+}
+
+.header button:first-child {
+  margin-right: 10%;
+}
+.header button:last-child {
+  margin-left: 10%;
 }
 
 .cc1 {

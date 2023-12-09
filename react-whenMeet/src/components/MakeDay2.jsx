@@ -9,7 +9,7 @@ export default function MakeDay2() {
   return (
     <thead>
       <tr>
-        <th className="table_head"></th>
+        <th className="table_head tt"></th>
         {days}
       </tr>
     </thead>

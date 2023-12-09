@@ -194,38 +194,40 @@ function UserTimeInfo() {
   };
 
   return (
-    <div className="center-container">
-      <div className="calendarForm">
-        <div className="cc1">
-          <button
-            type="button"
-            className={"now" + !state}
-            onClick={handleState1}
-          >
-            가능한 시간
-          </button>
-          <button
-            type="button"
-            className={"now" + state}
-            onClick={handleState2}
-          >
-            불가능한 시간
-          </button>
-        </div>
-        <CalendarWeek2
-          state={state}
-          startDate={startDate}
-          endDate={endDate}
-          startTime={startTime}
-          endTime={endTime}
-          today={today}
-          availableSchedules={availableSchedules}
-          availableTimes={availableTimes}
-          setAvailableTimes={setAvailableTimes}
-          isContain={isContain}
-        />
-        <div className="cc">
-          <Button type="submit" text="제출하기" onClick={handleAlert} />
+    <div className="what">
+      <div className="center-container3">
+        <div className="calendarForm">
+          <div className="cc1">
+            <button
+              type="button"
+              className={"now" + !state}
+              onClick={handleState1}
+            >
+              가능한 시간
+            </button>
+            <button
+              type="button"
+              className={"now" + state}
+              onClick={handleState2}
+            >
+              불가능한 시간
+            </button>
+          </div>
+          <CalendarWeek2
+            state={state}
+            startDate={startDate}
+            endDate={endDate}
+            startTime={startTime}
+            endTime={endTime}
+            today={today}
+            availableSchedules={availableSchedules}
+            availableTimes={availableTimes}
+            setAvailableTimes={setAvailableTimes}
+            isContain={isContain}
+          />
+          <div className="cc">
+            <Button type="submit" text="제출하기" onClick={handleAlert} />
+          </div>
         </div>
       </div>
     </div>

@@ -74,7 +74,7 @@ function CaculateWeek({
   const weekArr = [];
   const selectArr = [];
 
-  weekArr.push(<td></td>);
+  weekArr.push(<td className="tt"></td>);
   for (let i = startTime; i < endTime; i++) {
     const forSelect = [];
     const minute = i * 30;
@@ -135,7 +135,7 @@ function CaculateWeek({
 
     selectArr.push(
       <tr key={i}>
-        <td>{time}</td>
+        <td className="tt">{time}</td>
         {forSelect}
       </tr>
     );
@@ -227,7 +227,7 @@ function CalendarWeek2({
   return (
     <div className="calendar">
       <div className="header">
-        <h2>
+        <h2 className="UTH2">
           <button onClick={prevWeek}>prev</button>
           {nowYear}년 {nowMonth}월 {nowWeek}주차
           <button onClick={nextWeek}>next</button>
