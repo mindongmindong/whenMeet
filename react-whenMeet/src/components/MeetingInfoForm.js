@@ -148,7 +148,15 @@ function MeetingInfoForm() {
             />
           </div>
         </div>
-        <Button type="submit" text="시작하기" disabled={!isFormValid} />
+        {isFormValid ? (
+          <Button type="submit" text="시작하기" disabled={!isFormValid} />
+        ) : (
+          <Button
+            type="submit"
+            text="필수 선택 항목을 확인하세요"
+            disabled={!isFormValid}
+          />
+        )}
       </div>
     </form>
   );
