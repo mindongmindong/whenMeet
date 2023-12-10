@@ -69,9 +69,9 @@ function MeetingInfoForm() {
         transformedPurpose = "ETC";
       }
       try {
-        console.log(startTime);
-        console.log(endTime);
-        console.log(usingDate);
+        // console.log(startTime);
+        // console.log(endTime);
+        // console.log(usingDate);
         const response = await axios.post("/meetings", {
           title: title,
           adminPassword: password,
@@ -88,7 +88,7 @@ function MeetingInfoForm() {
       } catch (error) {
         console.error("Error sending data to the backEnd", error);
       }
-      console.log(meetingPurpose);
+      // console.log(meetingPurpose);
     }
   };
 

@@ -116,7 +116,7 @@ const CalendarWeek = ({
   };
 
   const weekDates = weeks[currentWeekIndex] || [];
-  console.log(endTimeSlot, startTimeSlot);
+  // console.log(endTimeSlot, startTimeSlot);
   return (
     <div className="calendarWeekContainer wrap">
       <div className="button-container">

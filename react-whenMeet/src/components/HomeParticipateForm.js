@@ -3,7 +3,7 @@ import Input from "./Input";
 import Button from "./Button";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import "../styles/HomeParticipateForm.css"
+import "../styles/HomeParticipateForm.css";
 
 function HomeParticipateForm() {
   const [name, setName] = useState("");
@@ -61,7 +61,7 @@ function HomeParticipateForm() {
 
             try {
               const response = await axios.get(`/meetings/${id}/`);
-              console.log(response);
+              // console.log(response);
               const startDate = response.data.startDate;
               const endDate = response.data.endDate;
               const startTime = response.data.availableVotingStartTime;
@@ -82,10 +82,10 @@ function HomeParticipateForm() {
                   },
                 });
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             } catch (e) {
-              console.log(e);
+              console.error(e);
             }
           } catch (error) {
             if (error.response) {
@@ -103,9 +103,9 @@ function HomeParticipateForm() {
             }
           }
         } catch (error) {
-          if(error.response){
-            if(error.response.status === 409){
-              alert("인원 초과입니다")
+          if (error.response) {
+            if (error.response.status === 409) {
+              alert("인원 초과입니다");
             }
           }
         }
@@ -123,7 +123,7 @@ function HomeParticipateForm() {
             }
           );
           const response = await axios.get(`/meetings/${id}/my/schedules`); //투표 여부 확인을 위해
-          console.log(response);
+          // console.log(response);
           const schedules = response.data.schedules;
           if (schedules.length) {
             // 투표를 진행하였으면 결과 페이지로 이동
@@ -134,7 +134,7 @@ function HomeParticipateForm() {
               // 쿠키 재생성
               try {
                 const response = await axios.get(`/meetings/${id}/`);
-                console.log(response);
+                // console.log(response);
                 const startDate = response.data.startDate;
                 const endDate = response.data.endDate;
                 const startTime = response.data.availableVotingStartTime;
@@ -150,7 +150,7 @@ function HomeParticipateForm() {
                   },
                 });
               } catch (e) {
-                console.log(e);
+                console.error(e);
               }
             } catch (error) {
               if (error.response) {
@@ -191,7 +191,10 @@ function HomeParticipateForm() {
     <form>
       <div>
         <h1>투표에 참여하기</h1>
-        <h2 className="h2"> 아이디가 없다면 아래 양식에 맞춰 작성 후 참여하기를 누르세요</h2>
+        <h2 className="h2">
+          {" "}
+          아이디가 없다면 아래 양식에 맞춰 작성 후 참여하기를 누르세요
+        </h2>
         <Input
           type="text"
           value={name}
