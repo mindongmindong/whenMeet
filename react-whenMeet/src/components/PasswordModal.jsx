@@ -17,8 +17,8 @@ function PasswordModal({ isOpen, onRequestClose, onSubmit }) {
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="비밀번호 입력"
-      overlayClassName={"modal-overlay"} // 오버레이 클래스 추가
-      className={"modal-content"} // 컨텐츠(모달 창) 클래스
+      overlayClassName={"modal-overlay"}
+      className={"modal-content"}
     >
       <h2 style={{ justifyContent: "center" }}>관리자 비밀번호를 입력하세요</h2>
       <input

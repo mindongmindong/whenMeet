@@ -51,7 +51,7 @@ export default function ResultEndForm() {
     FOOD: "식사를 하는 ",
     ETC: "기타의 모임을 잡은 ",
   };
-  // console.log(possibleDates);
+
   const fetchMeetingData = async () => {
     try {
       const response = await fetch(`/meetings/${meeting_id}/details`);
@@ -193,7 +193,6 @@ export default function ResultEndForm() {
   if (!meetingData) {
     return <div>로딩 중...</div>;
   }
-  // console.log(meetingData.confirmedTime);
   return (
     <div
       style={{
