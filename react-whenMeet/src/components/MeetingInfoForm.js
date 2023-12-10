@@ -118,7 +118,7 @@ function MeetingInfoForm() {
         </div>
         <div className="form-input">
           <div className="timeStartEnd">
-            <h2 className="availableVote">투표 가능 시간</h2>
+            <h2 className="availableVote">투표 가능 약속 시간</h2>
             <TimeInput onTimeChange={handleStartTimeChange} />
             ~
             <TimeInput onTimeChange={handleEndTimeChange} />
