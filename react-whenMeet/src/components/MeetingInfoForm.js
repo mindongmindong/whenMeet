@@ -92,7 +92,10 @@ function MeetingInfoForm() {
     }
   };
 
-  const isFormValid = meetingPurpose.trim() !== "" && startNum < endNum;
+  const isFormValid =
+    meetingPurpose.trim() !== "" &&
+    meetingPurpose.trim() !== "선택" &&
+    startNum < endNum;
 
   return (
     <form onSubmit={handleSubmit}>
