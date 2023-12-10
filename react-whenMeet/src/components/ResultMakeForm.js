@@ -86,6 +86,12 @@ function ResultMakeForm() {
         });
         setMeetingData(response.data);
         setIsLoading(false);
+
+        if (
+          response.data.currentParticipants === response.data.maxParticipants
+        ) {
+          navigate(`/resultend/${meeting_id}`);
+        }
       } catch (error) {
         console.error("데이터 로딩 에러:", error);
         setIsLoading(false);
