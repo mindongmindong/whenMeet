@@ -37,7 +37,18 @@ function MeetingInfoForm() {
   };
 
   const handleVoteEnd = (event) => {
-    setEndVote(event.target.value);
+    const d = new Date(new Date(event.target.value) - 60 * 60 * 9 * 1000);
+    const ev =
+      d.getFullYear() +
+      "-" +
+      String(d.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(d.getDate()).padStart(2, "0") +
+      "T" +
+      String(d.getHours()).padStart(2, "0") +
+      ":" +
+      String(d.getMinutes()).padStart(2, "0");
+    setEndVote(ev);
   };
 
   const handleStartTimeChange = (selectedHour, selectedMinute) => {
