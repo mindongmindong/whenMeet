@@ -13,6 +13,7 @@ function MeetingInfoForm() {
   const [meetingPurpose, setMeetingPurpose] = useState("");
   const [number, setNumber] = useState();
   const [endVote, setEndVote] = useState("");
+  const [endVoteForDisplay, setEndVoteForDisplay] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [startNum, setStartNum] = useState(0);
@@ -37,6 +38,7 @@ function MeetingInfoForm() {
   };
 
   const handleVoteEnd = (event) => {
+    setEndVoteForDisplay(event.target.value);
     const d = new Date(new Date(event.target.value) - 60 * 60 * 9 * 1000);
     const ev =
       d.getFullYear() +
@@ -157,7 +159,7 @@ function MeetingInfoForm() {
             <Input
               classname="vote-end"
               type="datetime-local"
-              value={endVote}
+              value={endVoteForDisplay}
               onChange={handleVoteEnd}
             />
           </div>
