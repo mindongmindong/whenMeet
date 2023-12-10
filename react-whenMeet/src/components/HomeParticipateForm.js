@@ -12,6 +12,21 @@ function HomeParticipateForm() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/meetings/${id}/details`);
+        console.log(response.data.isClosed);
+        if (response.data.isClosed === true) {
+          navigate(`/resultend/${id}`);
+        }
+      } catch (error) {
+        console.error("Error fetching meeting details:", error);
+      }
+    }; 
+    fetchData();
+  },[])
   const handleName = (event) => {
     setName(event.target.value);
   };
