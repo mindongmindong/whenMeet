@@ -15,7 +15,7 @@ function MeetingInfoForm() {
   const [endVote, setEndVote] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [startNum, setStartNum] = useState();
+  const [startNum, setStartNum] = useState(0);
   const [endNum, setEndNum] = useState();
   const navigate = useNavigate();
   const location = useLocation();
