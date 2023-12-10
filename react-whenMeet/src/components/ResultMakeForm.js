@@ -108,22 +108,20 @@ function ResultMakeForm() {
       }
 
       const voteExpiresKST = new Date(meetingData.voteExpiresAt);
-
       const now = new Date();
-      const nowKST = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC 시간에 9시간을 더해 KST로 조정
-
+      const nowKST = new Date(now.getTime()); // UTC 시간에 9시간을 더해 KST로 조정
       const difference = voteExpiresKST - nowKST;
-
-      if (difference > 0) {
-        return {
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        };
-      } else {
+      if (difference <= 0) {
+        navigate(`/resultend/${meeting_id}`);
         return { days: 0, hours: 0, minutes: 0, seconds: 0 };
       }
+
+      return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
     };
 
     const updateTimer = () => {
@@ -138,7 +136,7 @@ function ResultMakeForm() {
 
     const timerId = setInterval(updateTimer, 1000);
     return () => clearInterval(timerId);
-  }, [meetingData]);
+  }, [meetingData, navigate, meeting_id]);
 
   const handleEdit = async () => {
     try {
