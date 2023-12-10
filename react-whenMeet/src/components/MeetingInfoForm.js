@@ -15,8 +15,8 @@ function MeetingInfoForm() {
   const [endVote, setEndVote] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [startNum,setStartNum] = useState();
-  const [endNum,setEndNum] = useState();
+  const [startNum, setStartNum] = useState();
+  const [endNum, setEndNum] = useState();
   const navigate = useNavigate();
   const location = useLocation();
   const { title, password } = location.state;
@@ -41,12 +41,12 @@ function MeetingInfoForm() {
   };
 
   const handleStartTimeChange = (selectedHour, selectedMinute) => {
-    setStartNum(selectedHour*2 + selectedMinute/30)
+    setStartNum(selectedHour * 2 + selectedMinute / 30);
     setStartTime(`${selectedHour}:${selectedMinute}:00`);
   };
 
   const handleEndTimeChange = (selectedHour, selectedMinute) => {
-    setEndNum(selectedHour*2 + selectedMinute/30)
+    setEndNum(selectedHour * 2 + selectedMinute / 30);
     setEndTime(`${selectedHour}:${selectedMinute}:00`);
   };
 
@@ -116,16 +116,16 @@ function MeetingInfoForm() {
         <div className="calendar-month">
           <Calendar usingDate={usingDate} setUsingDate={setUsingDate} />
         </div>
-        <div className="timeStartEnd">
-          <h2>투표 가능 시간</h2>
-          <TimeInput onTimeChange={handleStartTimeChange} />
-          ~
-          <TimeInput onTimeChange={handleEndTimeChange} />
-        </div>
         <div className="form-input">
+          <div className="timeStartEnd">
+            <h2 className="availableVote">투표 가능 시간</h2>
+            <TimeInput onTimeChange={handleStartTimeChange} />
+            ~
+            <TimeInput onTimeChange={handleEndTimeChange} />
+          </div>
           <h2>추가 설정</h2>
           <div className="num-of-people">
-            <h2>
+            <h2 className="numVoter">
               투표 인원수<span className="selection">(선택)</span>
             </h2>
             <Input
@@ -148,7 +148,7 @@ function MeetingInfoForm() {
             />
           </div>
         </div>
-        <Button type="submit" text="시작하기" disabled={!isFormValid}/>
+        <Button type="submit" text="시작하기" disabled={!isFormValid} />
       </div>
     </form>
   );

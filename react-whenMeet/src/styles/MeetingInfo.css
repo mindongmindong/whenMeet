@@ -38,8 +38,19 @@ h2 {
   font-size: 16px;
   padding: 5px;
 }
-
+.availableVote {
+  width: 40%;
+  text-align: left;
+  white-space: nowrap;
+}
+.numVoter {
+  width: 50%;
+  text-align: left;
+  white-space: nowrap;
+}
 .not-enter {
+  width: 50%;
+  text-align: left;
   white-space: nowrap;
 }
 
